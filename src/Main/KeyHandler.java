@@ -36,31 +36,9 @@ public class KeyHandler implements KeyListener {
             else if(gamePanel.gameState == gamePanel.pauseState){
                 pauseState(code);
             }
-        // DIALOGUE STATE:
-            else if(gamePanel.gameState == gamePanel.dialogueState){
-                dialogueState(code);
-            }
-        // CHARACTER STATE:
-            else if(gamePanel.gameState == gamePanel.characterState){
-                characterState(code);
-            }
-            else if(gamePanel.gameState == gamePanel.battleState){
-                battleState(code);
-            }
         //OPTION STATE
             else if(gamePanel.gameState == gamePanel.optionsState) {
                 optionsState(code);
-            }
-            // GAMEOVER STATE
-            else if(gamePanel.gameState == gamePanel.gameOverState){
-                gameOverState(code);
-            }
-            // TRADE STATE
-            else if(gamePanel.gameState == gamePanel.tradeState){
-                tradeState(code);
-            }
-            else if(gamePanel.gameState == gamePanel.bossBattleState){
-                battleState(code);
             }
     }
     // STATES
@@ -131,11 +109,6 @@ public class KeyHandler implements KeyListener {
                 gamePanel.gameState = gamePanel.pauseState;
             }
 
-            // PRESS C TO CHANGE TO CHARACTER STATE:
-            if(code == KeyEvent.VK_C)
-            {
-                gamePanel.gameState = gamePanel.characterState;
-            }
             // Debug
             if(code == KeyEvent.VK_T){
                 if(showDebugText == false){
@@ -143,17 +116,6 @@ public class KeyHandler implements KeyListener {
                 }
                 else if(showDebugText == true){
                     showDebugText = false;
-                }
-            }
-            if(code == KeyEvent.VK_R) {
-                System.out.println(+gamePanel.currentMap);
-                switch (gamePanel.currentMap) {
-                    case 0:
-                        gamePanel.tileManager.loadMap("res/MapData/mapdata.txt", 0);
-                        break;
-                    case 1:
-                        gamePanel.tileManager.loadMap("res/MapData/mapdataDung.txt", 1);
-                        break;
                 }
             }
 }
@@ -206,50 +168,7 @@ public class KeyHandler implements KeyListener {
                 
             }
         }
-        // CHARACTER STATE
-        public void characterState(int code) {
-        if(code == KeyEvent.VK_C){
-            gamePanel.gameState = gamePanel.playState;
-        }
         
-        if(code == KeyEvent.VK_ENTER){
-            gamePanel.player.selectItem();
-        }
-        playerInventory(code);
-    }
-        // BATTLE STATE
-        public void battleState(int code){
-        if(gamePanel.battleSystem.orderTurn == 0){
-            if(code == KeyEvent.VK_W){
-                gamePanel.battleSystem.interactNum--;
-                if(gamePanel.battleSystem.interactNum == -1){
-                    gamePanel.battleSystem.interactNum = gamePanel.battleSystem.numberOfInteractNum;
-                }
-            }
-            if(code == KeyEvent.VK_S){
-                gamePanel.battleSystem.interactNum++;
-                if(gamePanel.battleSystem.interactNum > gamePanel.battleSystem.numberOfInteractNum){
-                    gamePanel.battleSystem.interactNum = 0;
-                }
-            }
-            if(code == KeyEvent.VK_ENTER){
-                if(gamePanel.battleSystem.interactType < 2){
-                    gamePanel.battleSystem.interactType++;
-                }
-                else if(gamePanel.battleSystem.interactType == 2){
-                    gamePanel.battleSystem.interactType = 0;
-                    gamePanel.player.battleAction(gamePanel.battleSystem.selectAction, gamePanel.battleSystem.choosingEquipAction, gamePanel.battleSystem.choosingEnemyAction);
-                }
-                gamePanel.battleSystem.interactNum = 0;
-            }
-            if(code == KeyEvent.VK_ESCAPE){
-                if(gamePanel.battleSystem.interactType > 0){
-                    gamePanel.battleSystem.interactType--;
-                }
-            }
-        }
-    }
-
         // OPTION STATE:
         public void optionsState(int code) {
             if(code == KeyEvent.VK_ESCAPE) {
@@ -337,86 +256,11 @@ public class KeyHandler implements KeyListener {
             if(gamePanel.ui.commandNum == 0){
                 gamePanel.gameState = gamePanel.playState;
                 gamePanel.retry();
-                if (gamePanel.currentMap == 0) {
-                    gamePanel.playMusic(0);
-                } else if (gamePanel.currentMap == 1) {
-                    gamePanel.playMusic(2);
-                }
             }
             else if(gamePanel.ui.commandNum == 1){
                 gamePanel.gameState = gamePanel.titleState;
                 gamePanel.restart();
                 System.out.println(gamePanel.gameState);
-            }
-        }
-    }
-        public void tradeState(int code){
-        if(code == KeyEvent.VK_ENTER){
-            enterPressed = true;
-        }
-        if(gamePanel.ui.subState == 0){
-            if(code == KeyEvent.VK_W){
-                gamePanel.ui.tradeCommandNum--;
-                if (gamePanel.ui.tradeCommandNum < 0) {
-                    gamePanel.ui.tradeCommandNum = 1;
-                }
-                // gamePanel.playSE(9);
-            }
-            if(code == KeyEvent.VK_S){
-                gamePanel.ui.tradeCommandNum++;
-                if (gamePanel.ui.tradeCommandNum > 1) {
-                    gamePanel.ui.tradeCommandNum = 0;
-                }
-                // gamePanel.playSE(9);
-            }
-        }
-        if(gamePanel.ui.subState == 1){
-            npcInventory(code);
-            if(code == KeyEvent.VK_ESCAPE){
-                gamePanel.ui.subState = 0;
-            }
-        }
-    /*     if(gamePanel.ui.subState == 2){
-            playerInventory(code);
-            if(code == KeyEvent.VK_ESCAPE){
-                gamePanel.ui.subState = 0;
-            }
-        } */
-    }
-        public void playerInventory(int code){
-        if(code == KeyEvent.VK_W){
-            if(gamePanel.ui.playerSlotRow != 0){
-                gamePanel.ui.playerSlotRow--;
-
-            }
-        }
-        if(code == KeyEvent.VK_A){
-            if(gamePanel.ui.playerSlotCol != 0){
-                gamePanel.ui.playerSlotCol--;
-            }
-        }
-        if(code == KeyEvent.VK_S){
-            if(gamePanel.ui.playerSlotRow != 2){
-                gamePanel.ui.playerSlotRow++;
-            }
-        }
-        if(code == KeyEvent.VK_D){
-            if(gamePanel.ui.playerSlotCol != 5){
-                gamePanel.ui.playerSlotCol++;
-            }
-        }
-    }
-    public void npcInventory(int code){
-        if(code == KeyEvent.VK_A){
-            if(gamePanel.ui.npcSlotCol != 0){
-                gamePanel.playSE(12);
-                gamePanel.ui.npcSlotCol--;
-            }
-        }
-        if(code == KeyEvent.VK_D){
-            if(gamePanel.ui.npcSlotCol < UI.getBuyingSlotCommandNum() - 1){
-                gamePanel.playSE(12);
-                gamePanel.ui.npcSlotCol++;
             }
         }
     }
