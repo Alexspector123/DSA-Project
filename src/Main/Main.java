@@ -10,6 +10,7 @@ public class Main {
     public static Window window;
 
 	public static <image> void main(String[] args) {
+
     // GENERATING WINDOW JFRAME:
         JFrame window = new JFrame("Finantasy");
 
@@ -23,10 +24,8 @@ public class Main {
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.setResizable(false);
 
-
             GamePanel gamePanel = new GamePanel();
             window.add(gamePanel);
-
             window.pack();
 
             window.setLocationRelativeTo(null);

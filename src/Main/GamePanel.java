@@ -9,23 +9,15 @@ public class GamePanel extends JPanel implements Runnable{
 
     // SCREEN SETTINGS:
     final int fps = 60;
-    final int originalTileSize = 16; // 16x16 tile
     final int scale = 3;
 
-    // TILE SETTINGS:
-    public final int tileSize = originalTileSize * scale; // 48x48 tile
-
     // SCREEN SETTINGS:
-        public final int maxScreenColumn = 18;
-        public final int maxScreenRow = 14;
-        public final int screenWidth = tileSize * maxScreenColumn;
-        public final int screenHeight = tileSize * maxScreenRow;
-    // WORLD SETTINGS:
-        public final int maxWorldColumn = 64; // can be adjusted
-        public final int maxWorldRow = 64; // can be adjusted
+        public static final int Width = 1280;
+        public static final int Height = 720;
+
     // FOR FULL SCREEN
-        public int screenHeight2 = screenHeight;
-        public int screenWidth2 = screenWidth;
+        public int screenHeight2 = Height;
+        public int screenWidth2 = Width;
         BufferedImage tempScreen;
         Graphics2D graphics2D;
         public boolean fullScreenOn = true;
@@ -48,13 +40,16 @@ public class GamePanel extends JPanel implements Runnable{
     public final int optionsState = 3;
     public final int gameOverState = 4;
 
+    // Play Manager
+    PlayManager playManager = new PlayManager();
 //    // Config
 //        Config config = new Config(this);
 
    // CONSTRUCTOR:
         public GamePanel() {
-                this.setPreferredSize(new Dimension(screenWidth,screenHeight));
-                this.setBackground(Color.WHITE);
+                this.setPreferredSize(new Dimension(Width,Height));
+                this.setBackground(Color.BLACK);
+                this.setLayout(null);
                 this.setDoubleBuffered(true);
                 this.addKeyListener(keyHandler);
                 this.setFocusable(true);
@@ -63,8 +58,7 @@ public class GamePanel extends JPanel implements Runnable{
    // METHODS:
         public void setupGame(){
             // DEFAULT GAME STATE:
-                gameState = titleState;
-
+                gameState = playState;
             //    playMusic(1);
 
 
@@ -121,9 +115,9 @@ public class GamePanel extends JPanel implements Runnable{
             }
 
         }
-        public void update() {
+        private void update() {
             if (gameState == playState) {
-                
+                playManager.update();
             }
         }
     public void paintComponent(Graphics graphics){
@@ -144,6 +138,7 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             // PLAY STATE:
                 else {
+                    playManager.draw(graphics2D);
                     // UI
                         ui.draw(graphics2D);
             }
