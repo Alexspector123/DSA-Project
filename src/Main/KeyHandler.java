@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, charPressed = false;
+    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
     // Debug
     boolean showDebugText = false;
@@ -22,6 +22,7 @@ public class KeyHandler implements KeyListener {
     // KEYPRESSED:
         @Override
         public void keyPressed(KeyEvent e) {
+
             int code = e.getKeyCode();
 
         // TITLE STATE:

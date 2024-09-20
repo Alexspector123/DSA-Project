@@ -12,7 +12,7 @@ public class Main {
 	public static <image> void main(String[] args) {
 
     // GENERATING WINDOW JFRAME:
-        JFrame window = new JFrame("Finantasy");
+        JFrame window = new JFrame("Tetris");
 
     // WINDOW SETTINGS:
 

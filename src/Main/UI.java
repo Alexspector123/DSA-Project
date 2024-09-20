@@ -104,7 +104,7 @@ public class UI {
         }
         // PLAY STATE:
         else if(gamePanel.gameState == gamePanel.playState){
-            drawMessage();
+            drawTutorial();
         //    gamePanel.player.checkLevelUp();
         }
         // PAUSE STATE:
@@ -124,38 +124,7 @@ public class UI {
             drawGameOverScreen();
         }
     }
-/*    public void drawPlayerLife(){
-
-        //   gamePanel.player.life = 5;
-   
-           int x = gamePanel.tileSize/2;
-           int y = gamePanel.tileSize/2;
-           int i = 0;
-   
-           // Draw max life
-           while(i < gamePanel.player.maxLife/2){
-               g2.drawImage(heart_blank, x, y, null);
-               i++;
-               x += gamePanel.tileSize;
-           }
-   
-           // Reset
-           x = gamePanel.tileSize/2;
-           y = gamePanel.tileSize/2;
-           i = 0;
-   
-           // Draw current life
-           while(i < gamePanel.player.life){
-               g2.drawImage(heart_half, x, y, null);
-               i++;
-               if(i < gamePanel.player.life) {
-                   g2.drawImage(heart_full, x, y, null);
-               }
-               i++;
-               x += gamePanel.tileSize;
-           }
-    }           */
-    public void drawMessage(){
+    public void drawTutorial(){
         
     }
     public void drawTitleScreen(){
@@ -165,7 +134,9 @@ public class UI {
         
     }
     public void drawPauseScreen(){
-
+        g2.setColor(Color.yellow);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        g2.drawString("Paused", PlayManager.left_x+130, PlayManager.top_y+320);
     }
     public void drawOptionsScreen(){
         
@@ -200,7 +171,9 @@ public class UI {
             return itemIndex;
         }*/
         public void drawGameOverScreen(){
-
+            g2.setColor(Color.yellow);
+            g2.setFont(g2.getFont().deriveFont(50f));
+            g2.drawString("GameOver", PlayManager.left_x+130, PlayManager.top_y+320);
         }
         public void drawSubWindow(int x, int y, int width, int height) {
 
@@ -215,7 +188,7 @@ public class UI {
         }
     public int getXforCenteredText(String text){
         int length =(int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = gamePanel.Width/2 - length/2;
+        int x = gamePanel.WIDTH/2 - length/2;
         return x;
     }
     public int getXforAlignToRightText(String text, int tailX){

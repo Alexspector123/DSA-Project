@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int gameOverState = 4;
 
     // Play Manager
-    PlayManager playManager = new PlayManager();
+    PlayManager playManager = new PlayManager(this);
 //    // Config
 //        Config config = new Config(this);
 
@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
                 this.setPreferredSize(new Dimension(Width,Height));
                 this.setBackground(Color.BLACK);
                 this.setLayout(null);
-                this.setDoubleBuffered(true);
+                this.setDoubleBuffered(true);   // ??????
                 this.addKeyListener(keyHandler);
                 this.setFocusable(true);
         }
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable{
                 else {
                     playManager.draw(graphics2D);
                     // UI
-                        ui.draw(graphics2D);
+                    ui.draw(graphics2D);
             }
 
             // Debug
