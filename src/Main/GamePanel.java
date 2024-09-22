@@ -8,12 +8,18 @@ import java.awt.image.BufferedImage;
 public class GamePanel extends JPanel implements Runnable{
 
     // SCREEN SETTINGS:
-    final int fps = 60;
-    final int scale = 3;
+        final int fps = 60;
+        final int originalTitleSize = 16;
+        final int scale = 3;
+
+    // TITLE SETTINGS:
+        public final int tileSize = scale * originalTitleSize;
 
     // SCREEN SETTINGS:
         public static final int Width = 1280;
         public static final int Height = 720;
+        public final int screenWidth = Width;
+        public final int screenHeight = Height;
 
     // FOR FULL SCREEN
         public int screenHeight2 = Height;
@@ -58,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
    // METHODS:
         public void setupGame(){
             // DEFAULT GAME STATE:
-                gameState = playState;
+                gameState = titleState;
             //    playMusic(1);
 
 
