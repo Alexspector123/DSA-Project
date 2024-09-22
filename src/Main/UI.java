@@ -99,16 +99,19 @@ public class UI {
 
         // CHECK CURRENT GAME STATE:
         // TITLE SCREEN STATE:
-        if(gamePanel.gameState == gamePanel.titleState){
+        if(gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
         }
         // PLAY STATE:
-        else if(gamePanel.gameState == gamePanel.playState){
+        else if(gamePanel.gameState == gamePanel.playTetrisGameState) {
             drawTutorial();
         //    gamePanel.player.checkLevelUp();
         }
+        else if(gamePanel.gameState == gamePanel.gameOptionState) {
+            drawGameOptionGameScreen();
+        }
         // PAUSE STATE:
-        else if(gamePanel.gameState == gamePanel.pauseState){
+        else if(gamePanel.gameState == gamePanel.pauseState) {
             drawPauseScreen();
         }
         // OPTIONS STATE:
@@ -148,6 +151,36 @@ public class UI {
                     g2.drawImage( settingButton1 , x , y , null );
                 } else {
                     g2.drawImage( settingButton2 , x , y , null );
+                }
+            // EXIT BUTTON:
+                y += 82;
+                if ( commandNum == 2 ) {
+                    g2.drawImage( exitButton1 , x , y , null );
+                } else {
+                    g2.drawImage( exitButton2 , x , y , null );
+                }
+    }
+    public void drawGameOptionGameScreen(){
+        int x = 0;
+        int y = 0;
+        // DRAW MENU TITLE SCREEN:
+            g2.drawImage( titleScreen , x , y , null );
+        // DRAW BUTTON:
+            x += gamePanel.tileSize * 16;
+            y += gamePanel.tileSize * 5;
+            // TETRIS BUTTON:
+                if ( commandNum == 0 ) {
+                    g2.drawImage( playButton1 , x , y , null );
+                } else {
+                    g2.drawImage( playButton2 , x , y , null );
+                }
+
+            // MAZE BUTTON:
+                y += 82;
+                if ( commandNum == 1 ) {
+                    g2.drawImage( playButton1 , x , y , null );
+                } else {
+                    g2.drawImage( playButton2 , x , y , null );
                 }
             // EXIT BUTTON:
                 y += 82;

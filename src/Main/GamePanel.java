@@ -45,6 +45,9 @@ public class GamePanel extends JPanel implements Runnable{
     public final int pauseState = 2;
     public final int optionsState = 3;
     public final int gameOverState = 4;
+    public final int gameOptionState = 5;
+    public final int playMazeGameState = 6;
+    public final int playTetrisGameState = 7;
 
     // Play Manager
     PlayManager playManager = new PlayManager(this);
