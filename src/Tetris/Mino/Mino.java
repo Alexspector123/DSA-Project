@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import Main.KeyHandler;
-import Main.PlayManager;
+
+import Main_Tetris.PlayManager;
 
 public class Mino {
     

@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import Main_Tetris.PlayManager;
+
 public class GamePanel extends JPanel implements Runnable{
 
     // SCREEN SETTINGS:
