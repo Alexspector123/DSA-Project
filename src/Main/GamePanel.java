@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import Main_Tetris.PlayManager;
+import Main_Tetris.Tetris;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -51,8 +51,11 @@ public class GamePanel extends JPanel implements Runnable{
     public final int playMazeGameState = 6;
     public final int playTetrisGameState = 7;
 
-    // Play Manager
-    PlayManager playManager = new PlayManager(this);
+    // Play Manager Tetris
+    Tetris playManager = new Tetris(this);
+    // GameManager.getInstance().loadGame("Tetris");
+
+
 //    // Config
 //        Config config = new Config(this);
 
