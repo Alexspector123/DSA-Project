@@ -9,7 +9,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
 
-import Main_Tetris.PlayManager;
+import Main_Tetris.Tetris;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -507,7 +507,7 @@ public class UI {
         public void drawGameOverScreen(){
             g2.setColor(Color.yellow);
             g2.setFont(g2.getFont().deriveFont(50f));
-            g2.drawString("GameOver", PlayManager.left_x+130, PlayManager.top_y+320);
+            g2.drawString("GameOver", Tetris.left_x+130, Tetris.top_y+320);
         }
         public void drawSubWindow(int x, int y, int width, int height) {
 

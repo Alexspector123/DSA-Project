@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 import Main.KeyHandler;
 
-import Main_Tetris.PlayManager;
+import Main_Tetris.Tetris;
 
 public class Mino {
     
@@ -61,19 +61,19 @@ public class Mino {
         // Check frame Collision
         // Left wall
         for(int i=0; i<block.length; i++){
-            if(block[i].x == PlayManager.left_x){
+            if(block[i].x == Tetris.left_x){
                 leftCollision = true;
             }
         }
         // Right wall
         for(int i=0; i<block.length; i++){
-            if(block[i].x + Block.SIZE == PlayManager.right_x){
+            if(block[i].x + Block.SIZE == Tetris.right_x){
                 rightCollision = true;
             }
         }
         // Bottom wall
         for(int i=0; i<block.length; i++){
-            if(block[i].y + Block.SIZE == PlayManager.bottom_y){
+            if(block[i].y + Block.SIZE == Tetris.bottom_y){
                 bottomCollision = true;
             }
         }
@@ -88,29 +88,29 @@ public class Mino {
         // Check frame Collision
         // Left wall
         for(int i=0; i<block.length; i++){
-            if(tempBlock[i].x < PlayManager.left_x){
+            if(tempBlock[i].x < Tetris.left_x){
                 leftCollision = true;
             }
         }
         // Right wall
         for(int i=0; i<block.length; i++){
-            if(tempBlock[i].x + Block.SIZE > PlayManager.right_x){
+            if(tempBlock[i].x + Block.SIZE > Tetris.right_x){
                 rightCollision = true;
             }
         }
         // Bottom wall
         for(int i=0; i<block.length; i++){
-            if(tempBlock[i].y + Block.SIZE > PlayManager.bottom_y){
+            if(tempBlock[i].y + Block.SIZE > Tetris.bottom_y){
                 bottomCollision = true;
             }
         }
     }
     public void checkStaticBlocksCollision(){
 
-        for(int i=0; i<PlayManager.staticBlocks.size(); i++){
+        for(int i=0; i<Tetris.staticBlocks.size(); i++){
 
-            int TargetX = PlayManager.staticBlocks.get(i).x;
-            int TargetY = PlayManager.staticBlocks.get(i).y;
+            int TargetX = Tetris.staticBlocks.get(i).x;
+            int TargetY = Tetris.staticBlocks.get(i).y;
 
             for(int j=0; j<block.length; j++){
                 if(block[j].x == TargetX && block[j].y + Block.SIZE == TargetY){
@@ -192,7 +192,7 @@ public class Mino {
         }
         else{
             autoDropCounter++;
-            if(autoDropCounter == PlayManager.dropInterval){
+            if(autoDropCounter == Tetris.dropInterval){
                 // The Mino goes down
                 block[0].y += Block.SIZE;
                 block[1].y += Block.SIZE;
