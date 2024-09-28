@@ -3,6 +3,7 @@ package Mino;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import Main.GamePanel;
 import Main.KeyHandler;
 import Main.PlayManager;
 
@@ -74,7 +75,7 @@ public class Mino {
         for(int i=0; i<block.length; i++){
             if(block[i].y + Block.SIZE == PlayManager.bottom_y){
                 bottomCollision = true;
-            }
+            }   
         }
     }
     public void checkRotationCollision(){
@@ -127,6 +128,30 @@ public class Mino {
                 }
             }
         }
+    }
+    public void pushingMechanic(){
+
+        int distance = PlayManager.bottom_y - PlayManager.top_y;
+
+        for(int i=0; i<PlayManager.staticBlocks.size(); i++){
+
+            for(int j=0; j<block.length; j++){
+                
+                if(PlayManager.staticBlocks.get(i).y - block[j].y - Block.SIZE < distance){
+                    distance = PlayManager.staticBlocks.get(i).y - block[j].y - Block.SIZE;
+                }
+            }
+        }
+
+        for(int i=0; i<block.length; i++){
+            if(PlayManager.bottom_y - block[i].y - Block.SIZE < distance){
+                distance = PlayManager.bottom_y - block[i].y - Block.SIZE;
+            }
+        }
+        block[0].y += distance;
+        block[1].y += distance;
+        block[2].y += distance;
+        block[3].y += distance;
     }
     public void update(){
 
@@ -184,7 +209,12 @@ public class Mino {
                 KeyHandler.rightPressed = false;
             }
         }
-
+        if(KeyHandler.spacePressed){
+            
+            pushingMechanic();
+            
+            KeyHandler.spacePressed = false;
+        }
         if(bottomCollision)
         {
             deactivating = true;
