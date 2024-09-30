@@ -2,6 +2,8 @@ package Main;
 
 import javax.swing.JPanel;
 
+import GameManage.GameFactory;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -48,13 +50,11 @@ public class GamePanel extends JPanel implements Runnable{
     public final int optionsState = 3;
     public final int gameOverState = 4;
     public final int gameOptionState = 5;
-    public final int playMazeGameState = 6;
-    public final int playTetrisGameState = 7;
+    public GameManager playManager;
 
-    // Play Manager Tetris
-    Tetris playManager = new Tetris(this);
-    // GameManager.getInstance().loadGame("Tetris");
 
+    // Direct game
+    playManager.choose();
 
 //    // Config
 //        Config config = new Config(this);

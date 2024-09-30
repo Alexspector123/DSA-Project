@@ -1,5 +1,6 @@
 package GameManage;
 
+import Main.GameManager;
 import Main.GamePanel;
 import Main_Tetris.Tetris;
 import Maze.Main_Maze.Maze;

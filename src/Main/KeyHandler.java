@@ -105,12 +105,12 @@ public class KeyHandler implements KeyListener {
                         gamePanel.tempGameState = gamePanel.titleState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
-                        gamePanel.gameState = gamePanel.playTetrisGameState;
+                        gamePanel.chooseGame("Tetris");
                     }
                     // PRESS ENTER WITH PLAY MAZE GAME BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
                         gamePanel.tempGameState = gamePanel.titleState;
-                        gamePanel.gameState = gamePanel.playMazeGameState;
+                        gamePanel.chooseGame("Maze");
                     }
                     // PRESS ENTER WITH EXIT BUTTON:
                     if (gamePanel.ui.commandNum == 2) {

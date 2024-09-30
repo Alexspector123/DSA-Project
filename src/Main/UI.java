@@ -105,9 +105,14 @@ public class UI {
             drawTitleScreen();
         }
         // PLAY STATE:
+        // Tetris game play
         else if(gamePanel.gameState == gamePanel.playTetrisGameState) {
             drawTutorial();
         //    gamePanel.player.checkLevelUp();
+        }
+        // Maze game play
+        else if(gamePanel.gameState == gamePanel.playMazeGameState) {
+            drawMazeGame();
         }
         else if(gamePanel.gameState == gamePanel.gameOptionState) {
             drawGameOptionGameScreen();
@@ -130,6 +135,9 @@ public class UI {
         }
     }
     public void drawTutorial(){
+        
+    }
+    public void drawMazeGame(){
         
     }
     public void drawTitleScreen(){
