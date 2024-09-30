@@ -3,12 +3,12 @@ package Mino;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import Main.GamePanel;
 import Main.KeyHandler;
 import Main.PlayManager;
 
 public class Mino {
     
+    // For the mino
     public Block block[] = new Block[4];
     public Block tempBlock[] = new Block[4];
     int autoDropCounter = 0;
@@ -44,8 +44,6 @@ public class Mino {
             block[3].x = tempBlock[3].x;
             block[3].y = tempBlock[3].y;
         }
-        
-
     }
     public void getDirection1(){}
     public void getDirection2(){}
@@ -129,29 +127,15 @@ public class Mino {
             }
         }
     }
-    public void pushingMechanic(){
+    public void droppingMechanic(){
 
-        int distance = PlayManager.bottom_y - PlayManager.top_y;
-
-        for(int i=0; i<PlayManager.staticBlocks.size(); i++){
-
-            for(int j=0; j<block.length; j++){
-                
-                if(PlayManager.staticBlocks.get(i).y - block[j].y - Block.SIZE < distance){
-                    distance = PlayManager.staticBlocks.get(i).y - block[j].y - Block.SIZE;
-                }
-            }
+        while(bottomCollision == false){
+            block[0].y += Block.SIZE;
+            block[1].y += Block.SIZE;
+            block[2].y += Block.SIZE;
+            block[3].y += Block.SIZE;
+            checkMovementCollision();
         }
-
-        for(int i=0; i<block.length; i++){
-            if(PlayManager.bottom_y - block[i].y - Block.SIZE < distance){
-                distance = PlayManager.bottom_y - block[i].y - Block.SIZE;
-            }
-        }
-        block[0].y += distance;
-        block[1].y += distance;
-        block[2].y += distance;
-        block[3].y += distance;
     }
     public void update(){
 
@@ -211,7 +195,7 @@ public class Mino {
         }
         if(KeyHandler.spacePressed){
             
-            pushingMechanic();
+            droppingMechanic();
             
             KeyHandler.spacePressed = false;
         }
@@ -256,5 +240,29 @@ public class Mino {
         graphics2D.fillRect(block[1].x+margin, block[1].y+margin, Block.SIZE-(margin*2), Block.SIZE-(margin*2));
         graphics2D.fillRect(block[2].x+margin, block[2].y+margin, Block.SIZE-(margin*2), Block.SIZE-(margin*2));
         graphics2D.fillRect(block[3].x+margin, block[3].y+margin, Block.SIZE-(margin*2), Block.SIZE-(margin*2));
+    }
+    
+    // For the ghost
+    public void duplicate(Mino mino){
+
+        block[0].x = mino.block[0].x;
+        block[0].y = mino.block[0].y;
+        block[1].x = mino.block[1].x;
+        block[1].y = mino.block[1].y;
+        block[2].x = mino.block[2].x;
+        block[2].y = mino.block[2].y;
+        block[3].x = mino.block[3].x;
+        block[3].y = mino.block[3].y;
+
+        bottomCollision = false;
+
+        checkMovementCollision();
+        while(bottomCollision == false){
+            block[0].y += Block.SIZE;
+            block[1].y += Block.SIZE;
+            block[2].y += Block.SIZE;
+            block[3].y += Block.SIZE;
+            checkMovementCollision();
+        }
     }
 }

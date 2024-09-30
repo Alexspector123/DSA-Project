@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
                 this.setDoubleBuffered(true);   // ??????
                 this.addKeyListener(keyHandler);
                 this.setFocusable(true);
+                //setBackground(new Color(0x7F00FF));
         }
 
    // METHODS:

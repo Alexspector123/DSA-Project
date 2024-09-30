@@ -31,9 +31,13 @@ public class PlayManager {
     Mino currentMino;
     final int MINO_START_X;
     final int MINO_START_Y;
+    // The Next Mino
     Mino nextMino;
     final int NEXTMINO_X;
     final int NEXTMINO_Y;
+    // The Ghost Mino
+    Mino ghostMino;
+
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
 
     // Drop attribute
@@ -68,9 +72,13 @@ public class PlayManager {
 
         // Set the starting Mino
         currentMino = pickMino();
-        currentMino.setXY(MINO_START_X, MINO_START_Y);
         nextMino = pickMino();
+        ghostMino = new Mino();
+        ghostMino.create(new Color(192,192,192  ));
+
+        currentMino.setXY(MINO_START_X, MINO_START_Y);
         nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+
     }
     private Mino pickMino(){
 
@@ -116,6 +124,7 @@ public class PlayManager {
             checkDelete();
         }
         else{
+            ghostMino.duplicate(currentMino);
             currentMino.update();
         }
     }
@@ -143,7 +152,7 @@ public class PlayManager {
                 // so we can delete them
                 if(blockCount == 12){
 
-                    effectCounterOn = true;
+                    //effectCounterOn = true;
                     effectY.add(y);
 
                     for(int i=staticBlocks.size()-1; i> -1; i--){
@@ -190,6 +199,13 @@ public class PlayManager {
     }
     public void draw(Graphics2D graphics2D){
 
+        // Draw the Mino inside
+        for(int i=0; i<HEIGHT; i+=Block.SIZE){
+            for(int j=0; j<WIDTH; j+=Block.SIZE){   
+                graphics2D.drawRect(left_x + j, top_y + i, Block.SIZE, Block.SIZE);
+            }
+        }
+
         //Draw Play Area Frame
         graphics2D.setColor(Color.WHITE);
         graphics2D.setStroke(new BasicStroke(4f));
@@ -213,6 +229,7 @@ public class PlayManager {
 
         // Draw the currentMino
         if (currentMino != null){
+            ghostMino.draw(graphics2D);
             currentMino.draw(graphics2D);
         }
         // Draw the nextMino
