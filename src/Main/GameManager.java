@@ -3,9 +3,9 @@ package Main;
 import GameManage.Game;
 import GameManage.GameFactory;
 import Maze.Main_Maze.Maze;
-import Tetris.Main_Tetris.Tetris;
+import Main_Tetris.Tetris;
 
-public class GameManager {
+public class GameManager extends Game{
     private static GameManager instance;
     private Game currentGame;
     GamePanel gamePanel;
@@ -16,6 +16,10 @@ public class GameManager {
             instance = new GameManager();
         }
         return instance;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
     }
 
     public void loadGame(String gameName) {
@@ -33,11 +37,11 @@ public class GameManager {
     }
 
     public void choose(String gameName) {
-         if (currentGame != null) {
+        if (currentGame != null) {
             currentGame.end();
         }
 
-        switch(gameName) {
+        switch (gameName) {
             case "Tetris":
                 currentGame = new Tetris(gamePanel);
                 break;

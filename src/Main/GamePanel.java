@@ -53,8 +53,6 @@ public class GamePanel extends JPanel implements Runnable{
     public GameManager playManager;
 
 
-    // Direct game
-    playManager.choose();
 
 //    // Config
 //        Config config = new Config(this);
@@ -76,6 +74,9 @@ public class GamePanel extends JPanel implements Runnable{
             //    playMusic(1);
 
 
+        }
+        public void chooseGame(String gameName) {
+            playManager.choose(gameName);
         }
         public void retry(){
         //    player.restoreLife();

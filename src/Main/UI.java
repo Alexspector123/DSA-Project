@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
 
 import Main_Tetris.Tetris;
+import Maze.Main_Maze.Maze;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +25,7 @@ public class UI {
     Graphics2D g2;
     Font maruMonica, purisaB;
     public boolean messageOn = false;
+    public GameManager gameManager;
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false;  //#10
@@ -106,12 +108,12 @@ public class UI {
         }
         // PLAY STATE:
         // Tetris game play
-        else if(gamePanel.gameState == gamePanel.playTetrisGameState) {
+        else if(gameManager.getCurrentGame() instanceof Tetris) {
             drawTutorial();
         //    gamePanel.player.checkLevelUp();
         }
         // Maze game play
-        else if(gamePanel.gameState == gamePanel.playMazeGameState) {
+        else if(gameManager.getCurrentGame() instanceof Maze) {
             drawMazeGame();
         }
         else if(gamePanel.gameState == gamePanel.gameOptionState) {
