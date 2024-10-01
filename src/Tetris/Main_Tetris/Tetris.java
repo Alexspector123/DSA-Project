@@ -242,4 +242,7 @@ public class Tetris extends Game {
             }
         }
     }
+    public void end(){
+        
+    }
 }

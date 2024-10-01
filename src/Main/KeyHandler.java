@@ -69,8 +69,8 @@ public class KeyHandler implements KeyListener {
                         gamePanel.tempGameState = gamePanel.titleState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
-                        //gamePanel.gameState = gamePanel.gameOptionState;
-                        gamePanel.gameState = gamePanel.playState;
+                        gamePanel.gameState = gamePanel.gameOptionState;
+                        //gamePanel.gameState = gamePanel.playState;
                     }
                     // PRESS ENTER WITH SETTING BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
@@ -102,19 +102,21 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY TETRIS GAME BUTTON:
                     if(gamePanel.ui.commandNum == 0){
-                        gamePanel.tempGameState = gamePanel.titleState;
+                        gamePanel.tempGameState = gamePanel.gameOptionState;
+                        gamePanel.gameState = gamePanel.playState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
                         gamePanel.chooseGame("Tetris");
                     }
                     // PRESS ENTER WITH PLAY MAZE GAME BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
-                        gamePanel.tempGameState = gamePanel.titleState;
+                        gamePanel.tempGameState = gamePanel.gameOptionState;
+                        gamePanel.gameState = gamePanel.playState;
                         gamePanel.chooseGame("Maze");
                     }
-                    // PRESS ENTER WITH EXIT BUTTON:
+                    // PRESS ENTER WITH RETURN BUTTON:
                     if (gamePanel.ui.commandNum == 2) {
-                        System.exit(0);
+                        gamePanel.gameState = gamePanel.titleState;
                     }
             }
         }

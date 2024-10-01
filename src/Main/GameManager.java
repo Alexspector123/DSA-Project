@@ -49,8 +49,8 @@ public class GameManager extends Game{
                 currentGame = new Maze(gamePanel);
                 break;
             default:
-                System.out.println("Invalid choice. Defaulting to Tetris.");
-                currentGame = new Tetris(gamePanel);
+                // Return if there isn't input 
+                gamePanel.gameState = gamePanel.titleState;
         }
 
         // Start the selected game

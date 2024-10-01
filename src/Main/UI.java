@@ -106,18 +106,20 @@ public class UI {
         if(gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
         }
-        // PLAY STATE:
-        // Tetris game play
-        else if(gameManager.getCurrentGame() instanceof Tetris) {
-            drawTutorial();
-        //    gamePanel.player.checkLevelUp();
-        }
-        // Maze game play
-        else if(gameManager.getCurrentGame() instanceof Maze) {
-            drawMazeGame();
-        }
         else if(gamePanel.gameState == gamePanel.gameOptionState) {
             drawGameOptionGameScreen();
+        }
+        // PLAY STATE:
+        else if(gamePanel.gameState == gamePanel.playState) {
+            // Tetris game play
+            if(gameManager.getCurrentGame() instanceof Tetris) {
+                drawTutorial();
+            //    gamePanel.player.checkLevelUp();
+            }
+            // Maze game play
+            else if(gameManager.getCurrentGame() instanceof Maze) {
+                drawMazeGame();
+            }
         }
         // PAUSE STATE:
         else if(gamePanel.gameState == gamePanel.pauseState) {
@@ -194,7 +196,7 @@ public class UI {
                 } else {
                     g2.drawImage( playButton2 , x , y , null );
                 }
-            // EXIT BUTTON:
+            // RETURM BUTTON:
                 y += 82;
                 if ( commandNum == 2 ) {
                     g2.drawImage( exitButton1 , x , y , null );

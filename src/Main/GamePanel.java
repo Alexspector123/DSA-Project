@@ -53,7 +53,6 @@ public class GamePanel extends JPanel implements Runnable{
     public GameManager playManager;
 
 
-
 //    // Config
 //        Config config = new Config(this);
 
@@ -151,12 +150,17 @@ public class GamePanel extends JPanel implements Runnable{
                 if(gameState == titleState) {
                     ui.draw(graphics2D);
                 }
-            // PLAY STATE:
                 else {
-                    playManager.draw(graphics2D);
-                    // UI
-                    ui.draw(graphics2D);
-            }
+                    if(gameState == gameOptionState) {
+                        ui.draw(graphics2D);s
+                    }
+                    // PLAY STATE:
+                    else {
+                        playManager.draw(graphics2D);
+                        // UI
+                        ui.draw(graphics2D);
+                    }
+                }
 
             // Debug
                 if(keyHandler.showDebugText == true){
@@ -174,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable{
                 }
 
                 graphics2D.dispose();
-                }
+        }
 
 
     // GAME THEME SONG:
