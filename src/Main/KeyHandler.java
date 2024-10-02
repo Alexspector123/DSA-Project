@@ -30,7 +30,7 @@ public class KeyHandler implements KeyListener {
                 titleState(code);
             }
         // CHOOSE GAME STATE:
-            if(gamePanel.gameState == gamePanel.gameOptionState){
+            else if(gamePanel.gameState == gamePanel.gameOptionState){
                 chooseGameState(code);
             }
         // GAME STATE:
@@ -70,7 +70,6 @@ public class KeyHandler implements KeyListener {
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
                         gamePanel.gameState = gamePanel.gameOptionState;
-                        //gamePanel.gameState = gamePanel.playState;
                     }
                     // PRESS ENTER WITH SETTING BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
@@ -302,7 +301,6 @@ public class KeyHandler implements KeyListener {
             else if(gamePanel.ui.commandNum == 1){
                 gamePanel.gameState = gamePanel.titleState;
                 gamePanel.restart();
-                System.out.println(gamePanel.gameState);
             }
         }
     }
@@ -326,6 +324,5 @@ public class KeyHandler implements KeyListener {
         {
             rightPressed = false;
         }
-        
     }
 }

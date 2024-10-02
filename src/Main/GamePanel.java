@@ -141,6 +141,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
         public void paintComponent(Graphics graphics){
 
+            System.out.println(gameState);
                 super.paintComponent(graphics);
 
                 Graphics2D graphics2D = (Graphics2D) graphics;
@@ -157,10 +158,10 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                     else if(gameState == gameOptionState) {
                         //playManager.draw();
+                        ui.draw(graphics2D);
                     }
                         // PLAY STATE:
                     else if(gameState == playState) {
-                        playManager.draw(graphics2D);
                         // UI
                         ui.draw(graphics2D);
                     }
