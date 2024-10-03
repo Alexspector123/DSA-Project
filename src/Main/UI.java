@@ -112,7 +112,7 @@ public class UI {
         else if(gamePanel.gameState == gamePanel.playState) {
             // Tetris game play
             if(gamePanel.playManager.getCurrentGame() instanceof Tetris) {
-                drawTutorial();
+                //drawTutorial();
             //    gamePanel.player.checkLevelUp();
             }
             // Maze game play

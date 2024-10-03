@@ -18,7 +18,7 @@ public class GameManager extends Game{
         return instance;
     }
 
-    public void setUp(GamePanel gamePanel, UI ui) {
+    public void setUp(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
@@ -31,7 +31,7 @@ public class GameManager extends Game{
             currentGame.end();
         }
 
-        currentGame = GameFactory.createNewGame(gameName, gamePanel);
+        currentGame = GameFactory.createNewGame(gameName, this.gamePanel);
     }
 
     public void stopGame() {

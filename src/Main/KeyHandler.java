@@ -54,14 +54,14 @@ public class KeyHandler implements KeyListener {
                 gamePanel.ui.commandNum--;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum < 0)
-                gamePanel.ui.commandNum = 2;
+                    gamePanel.ui.commandNum = 2;
             }
             if(code == KeyEvent.VK_S)
             {
                 gamePanel.ui.commandNum++;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum > 2)
-                gamePanel.ui.commandNum = 0;
+                    gamePanel.ui.commandNum = 0;
             }
             if (code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY BUTTON:
@@ -89,14 +89,14 @@ public class KeyHandler implements KeyListener {
                 gamePanel.ui.commandNum--;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum < 0)
-                gamePanel.ui.commandNum = 2;
+                    gamePanel.ui.commandNum = 2;
             }
             if(code == KeyEvent.VK_S)
             {
                 gamePanel.ui.commandNum++;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum > 2)
-                gamePanel.ui.commandNum = 0;
+                    gamePanel.ui.commandNum = 0;
             }
             if (code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY TETRIS GAME BUTTON:
@@ -105,13 +105,13 @@ public class KeyHandler implements KeyListener {
                         gamePanel.gameState = gamePanel.playState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
-                        gamePanel.chooseGame("Tetris");
+                        gamePanel.playManager.loadGame("Tetris");
                     }
                     // PRESS ENTER WITH PLAY MAZE GAME BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
                         gamePanel.tempGameState = gamePanel.gameOptionState;
                         gamePanel.gameState = gamePanel.playState;
-                        gamePanel.chooseGame("Maze");
+                        gamePanel.playManager.loadGame("Maze");
                     }
                     // PRESS ENTER WITH RETURN BUTTON:
                     if (gamePanel.ui.commandNum == 2) {

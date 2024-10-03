@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable{
                 this.addKeyListener(keyHandler);
                 this.setFocusable(true);
                 this.playManager = GameManager.getInstance();
-                playManager.setUp(this, ui);
+                playManager.setUp(this);
         }
 
    // METHODS:
@@ -75,9 +75,6 @@ public class GamePanel extends JPanel implements Runnable{
             //    playMusic(1);
 
 
-        }
-        public void chooseGame(String gameName) {
-            playManager.loadGame(gameName);
         }
         public void retry(){
         //    player.restoreLife();
@@ -135,9 +132,7 @@ public class GamePanel extends JPanel implements Runnable{
             if (gameState == playState) {
                 playManager.update();
             }
-            if(gameState == gameOptionState) {
-                ui.draw(graphics2D);
-            }
+            //System.out.println(playManager.getCurrentGame());
         }
         public void paintComponent(Graphics graphics){
 
