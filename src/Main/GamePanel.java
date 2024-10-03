@@ -61,8 +61,6 @@ public class GamePanel extends JPanel implements Runnable{
             // DEFAULT GAME STATE:
                 gameState = playState;
             //    playMusic(1);
-
-
         }
         public void retry(){
         //    player.restoreLife();
@@ -83,7 +81,6 @@ public class GamePanel extends JPanel implements Runnable{
             gameThread = new Thread(this);
             gameThread.start();
         }
-
         @Override
         public void run() {
 
@@ -112,9 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
             }
-
         }
         private void update() {
         
