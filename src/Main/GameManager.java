@@ -30,10 +30,9 @@ public class GameManager extends Game{
         if(currentGame != null) {
             currentGame.end();
         }
-
+        System.out.println(gameName);
         currentGame = GameFactory.createNewGame(gameName, gamePanel);
     }
-
     public void stopGame() {
         if(currentGame != null) {
             currentGame.end();
@@ -49,13 +48,13 @@ public class GameManager extends Game{
         // DRAW BUTTON:
         x += gamePanel.tileSize * 16;
         y += gamePanel.tileSize * 5;
+        System.out.println(gamePanel.ui.commandNum);
         // TETRIS BUTTON:
         if (gamePanel.ui.commandNum == 0 ) {
             gamePanel.ui.g2.drawImage(gamePanel.ui.playButton1 , x , y , null );
         } else {
             gamePanel.ui.g2.drawImage(gamePanel.ui.playButton2 , x , y , null );
         }
-
         // MAZE BUTTON:
         y += 82;
         if (gamePanel.ui.commandNum == 1 ) {

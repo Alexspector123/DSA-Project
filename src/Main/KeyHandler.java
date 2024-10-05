@@ -84,6 +84,7 @@ public class KeyHandler implements KeyListener {
         }
         // CHOOSE GAME STATE
         public void chooseGameState(int code){
+            
             if(code == KeyEvent.VK_W)
             {
                 gamePanel.ui.commandNum--;

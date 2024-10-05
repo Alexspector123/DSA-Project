@@ -141,7 +141,6 @@ public class GamePanel extends JPanel implements Runnable{
         }
         public void paintComponent(Graphics graphics){
 
-            System.out.println(gameState);
                 super.paintComponent(graphics);
 
                 Graphics2D graphics2D = (Graphics2D) graphics;
