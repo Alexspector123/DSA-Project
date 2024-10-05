@@ -18,7 +18,7 @@ public class GameManager extends Game{
         return instance;
     }
 
-    public void setUp(GamePanel gamePanel, UI ui) {
+    public void setUp(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
@@ -30,7 +30,6 @@ public class GameManager extends Game{
         if(currentGame != null) {
             currentGame.end();
         }
-        System.out.println(gameName);
         currentGame = GameFactory.createNewGame(gameName, gamePanel);
     }
     public void stopGame() {
@@ -48,7 +47,6 @@ public class GameManager extends Game{
         // DRAW BUTTON:
         x += gamePanel.tileSize * 16;
         y += gamePanel.tileSize * 5;
-        System.out.println(gamePanel.ui.commandNum);
         // TETRIS BUTTON:
         if (gamePanel.ui.commandNum == 0 ) {
             gamePanel.ui.g2.drawImage(gamePanel.ui.playButton1 , x , y , null );
