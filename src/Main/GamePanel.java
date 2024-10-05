@@ -2,6 +2,7 @@ package Main;
 
 import javax.swing.JPanel;
 
+import GameManage.Game;
 import GameManage.GameFactory;
 
 import java.awt.*;
@@ -129,8 +130,12 @@ public class GamePanel extends JPanel implements Runnable{
 
         }
         public void update() {
+            
             if (gameState == playState) {
-                playManager.update();
+                playManager.getCurrentGame().update();
+
+/*---------------------------------------------------------------*/
+
             }
             //System.out.println(playManager.getCurrentGame());
         }
@@ -156,6 +161,7 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                         // PLAY STATE:
                     else if(gameState == playState) {
+                        playManager.getCurrentGame().draw(graphics2D);
                         // UI
                         ui.draw(graphics2D);
                     }
