@@ -1,11 +1,12 @@
 package Main;
 
+import Tetris.Main_Tetris.PlayManager;
+
 import javax.swing.JPanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import Main_Tetris.PlayManager;
 
 public class GamePanel extends JPanel implements Runnable{
 

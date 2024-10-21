@@ -1,4 +1,4 @@
-package Mino;
+package Tetris.Mino;
 
 import java.awt.Color;
 

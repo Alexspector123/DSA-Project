@@ -1,4 +1,4 @@
-package Main_Tetris;
+package Tetris.Main_Tetris;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,15 +9,8 @@ import java.util.*;
 
 import Main.GamePanel;
 
-import Mino.Block;
-import Mino.Mino;
-import Mino.Mino_Bar;
-import Mino.Mino_L_Left;
-import Mino.Mino_L_Right;
-import Mino.Mino_Square;
-import Mino.Mino_T;
-import Mino.Mino_Z_Left;
-import Mino.Mino_Z_Right;
+
+import Tetris.Mino.*;
 
 public class PlayManager {
     

@@ -1,11 +1,11 @@
-package Mino;
+package Tetris.Mino;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 import Main.KeyHandler;
+import Tetris.Main_Tetris.PlayManager;
 
-import Main_Tetris.PlayManager;
 
 public class Mino {
     
