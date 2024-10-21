@@ -1,5 +1,3 @@
-package Tetris.Main_Tetris;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -7,10 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.*;
 
-import Main.GamePanel;
-
-
-import Tetris.Mino.*;
+import Mino.Mino;
 
 public class PlayManager {
     
