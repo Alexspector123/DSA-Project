@@ -1,7 +1,5 @@
 package Main;
 
-import Tetris.Main_Tetris.PlayManager;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,7 +9,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
 
-
+import Tetris.Main_Tetris.PlayManager;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
