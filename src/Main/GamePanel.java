@@ -2,10 +2,13 @@ package Main;
 
 import javax.swing.JPanel;
 
-import Tetris.Main_Tetris.PlayManager;
+import GameManage.Game;
+import GameManage.GameFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import Main_Tetris.Tetris;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -48,11 +51,9 @@ public class GamePanel extends JPanel implements Runnable{
     public final int optionsState = 3;
     public final int gameOverState = 4;
     public final int gameOptionState = 5;
-    public final int playMazeGameState = 6;
-    public final int playTetrisGameState = 7;
+    public GameManager playManager;
 
-    // Play Manager
-    PlayManager playManager = new PlayManager(this);
+
 //    // Config
 //        Config config = new Config(this);
 
@@ -64,6 +65,8 @@ public class GamePanel extends JPanel implements Runnable{
                 this.setDoubleBuffered(true);   // ??????
                 this.addKeyListener(keyHandler);
                 this.setFocusable(true);
+                this.playManager = GameManager.getInstance();
+                playManager.setUp(this);
         }
 
    // METHODS:
@@ -126,68 +129,77 @@ public class GamePanel extends JPanel implements Runnable{
             }
 
         }
-        private void update() {
+        public void update() {
+            
             if (gameState == playState) {
-                playManager.update();
+                playManager.getCurrentGame().update();
+
+/*---------------------------------------------------------------*/
+
             }
+            //System.out.println(playManager.getCurrentGame());
         }
-    public void paintComponent(Graphics graphics){
+        public void paintComponent(Graphics graphics){
 
-            super.paintComponent(graphics);
+                super.paintComponent(graphics);
 
-            Graphics2D graphics2D = (Graphics2D) graphics;
-            //DEBUG
-            long drawStart = 0;
+                Graphics2D graphics2D = (Graphics2D) graphics;
+                //DEBUG
+                long drawStart = 0;
 
-        // DEBUG TEXT:
-                if(keyHandler.showDebugText == true) {
-                    drawStart = System.nanoTime();
-                }
-                // TITLE SCREEN
-                if(gameState == titleState) {
-                    ui.draw(graphics2D);
-                }
-            // PLAY STATE:
-                else {
-                    playManager.draw(graphics2D);
-                    // UI
-                    ui.draw(graphics2D);
+            // DEBUG TEXT:
+                    if(keyHandler.showDebugText == true) {
+                        drawStart = System.nanoTime();
+                    }
+                    // TITLE SCREEN
+                    if(gameState == titleState) {
+                        ui.draw(graphics2D);
+                    }
+                    else if(gameState == gameOptionState) {
+                        //playManager.draw();
+                        ui.draw(graphics2D);
+                    }
+                        // PLAY STATE:
+                    else if(gameState == playState) {
+                        playManager.getCurrentGame().draw(graphics2D);
+                        // UI
+                        ui.draw(graphics2D);
+                    }
+
+                // Debug
+                    if(keyHandler.showDebugText == true){
+
+                        long drawEnd = System.nanoTime();
+                        long passed = drawEnd - drawStart;
+
+                        graphics2D.setFont(new Font("Arial", Font.PLAIN, 20));
+                        graphics2D.setColor(Color.white);
+                        int x = 10;
+                        int y = 400;
+                        int lineHeight = 20;
+
+                        graphics2D.drawString("Draw Time: "+passed, x, y);
+                    }
+
+                    graphics2D.dispose();
             }
 
-            // Debug
-                if(keyHandler.showDebugText == true){
 
-                    long drawEnd = System.nanoTime();
-                    long passed = drawEnd - drawStart;
+        // GAME THEME SONG:
 
-                    graphics2D.setFont(new Font("Arial", Font.PLAIN, 20));
-                    graphics2D.setColor(Color.white);
-                    int x = 10;
-                    int y = 400;
-                    int lineHeight = 20;
+            public void playMusic(int i){
+            music.setFile(i);
+            music.play();
+            music.loop();
+        }
 
-                    graphics2D.drawString("Draw Time: "+passed, x, y);
-                }
+        public void stopMusic(){
 
-                graphics2D.dispose();
-                }
-
-
-    // GAME THEME SONG:
-
-        public void playMusic(int i){
-        music.setFile(i);
-        music.play();
-        music.loop();
-    }
-
-    public void stopMusic(){
-
-        music.stop();
-    }
-// SOUND EFFECTS:
-    public void playSE(int i){
-        se.setFile(i);
-        se.play();
-    }
+            music.stop();
+        }
+    // SOUND EFFECTS:
+        public void playSE(int i){
+            se.setFile(i);
+            se.play();
+        }
 }

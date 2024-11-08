@@ -30,7 +30,7 @@ public class KeyHandler implements KeyListener {
                 titleState(code);
             }
         // CHOOSE GAME STATE:
-            if(gamePanel.gameState == gamePanel.gameOptionState){
+            else if(gamePanel.gameState == gamePanel.gameOptionState){
                 chooseGameState(code);
             }
         // GAME STATE:
@@ -54,14 +54,14 @@ public class KeyHandler implements KeyListener {
                 gamePanel.ui.commandNum--;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum < 0)
-                gamePanel.ui.commandNum = 2;
+                    gamePanel.ui.commandNum = 2;
             }
             if(code == KeyEvent.VK_S)
             {
                 gamePanel.ui.commandNum++;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum > 2)
-                gamePanel.ui.commandNum = 0;
+                    gamePanel.ui.commandNum = 0;
             }
             if (code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY BUTTON:
@@ -69,8 +69,7 @@ public class KeyHandler implements KeyListener {
                         gamePanel.tempGameState = gamePanel.titleState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
-                        //gamePanel.gameState = gamePanel.gameOptionState;
-                        gamePanel.gameState = gamePanel.playState;
+                        gamePanel.gameState = gamePanel.gameOptionState;
                     }
                     // PRESS ENTER WITH SETTING BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
@@ -85,36 +84,39 @@ public class KeyHandler implements KeyListener {
         }
         // CHOOSE GAME STATE
         public void chooseGameState(int code){
+            
             if(code == KeyEvent.VK_W)
             {
                 gamePanel.ui.commandNum--;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum < 0)
-                gamePanel.ui.commandNum = 2;
+                    gamePanel.ui.commandNum = 2;
             }
             if(code == KeyEvent.VK_S)
             {
                 gamePanel.ui.commandNum++;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum > 2)
-                gamePanel.ui.commandNum = 0;
+                    gamePanel.ui.commandNum = 0;
             }
             if (code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY TETRIS GAME BUTTON:
                     if(gamePanel.ui.commandNum == 0){
-                        gamePanel.tempGameState = gamePanel.titleState;
+                        gamePanel.tempGameState = gamePanel.gameOptionState;
+                        gamePanel.gameState = gamePanel.playState;
                         gamePanel.stopMusic();
                         gamePanel.playMusic(0);
-                        gamePanel.gameState = gamePanel.playTetrisGameState;
+                        gamePanel.playManager.loadGame("Tetris");
                     }
                     // PRESS ENTER WITH PLAY MAZE GAME BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
-                        gamePanel.tempGameState = gamePanel.titleState;
-                        gamePanel.gameState = gamePanel.playMazeGameState;
+                        gamePanel.tempGameState = gamePanel.gameOptionState;
+                        gamePanel.gameState = gamePanel.playState;
+                        gamePanel.playManager.loadGame("Maze");
                     }
-                    // PRESS ENTER WITH EXIT BUTTON:
+                    // PRESS ENTER WITH RETURN BUTTON:
                     if (gamePanel.ui.commandNum == 2) {
-                        System.exit(0);
+                        gamePanel.gameState = gamePanel.titleState;
                     }
             }
         }
@@ -300,7 +302,6 @@ public class KeyHandler implements KeyListener {
             else if(gamePanel.ui.commandNum == 1){
                 gamePanel.gameState = gamePanel.titleState;
                 gamePanel.restart();
-                System.out.println(gamePanel.gameState);
             }
         }
     }
@@ -324,6 +325,5 @@ public class KeyHandler implements KeyListener {
         {
             rightPressed = false;
         }
-        
     }
 }

@@ -9,7 +9,8 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
 
-import Tetris.Main_Tetris.PlayManager;
+import Main_Tetris.Tetris;
+import Maze.Main_Maze.Maze;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -104,13 +105,20 @@ public class UI {
         if(gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
         }
-        // PLAY STATE:
-        else if(gamePanel.gameState == gamePanel.playTetrisGameState) {
-            drawTutorial();
-        //    gamePanel.player.checkLevelUp();
-        }
         else if(gamePanel.gameState == gamePanel.gameOptionState) {
-            drawGameOptionGameScreen();
+            gamePanel.playManager.draw();
+        }
+        // PLAY STATE:
+        else if(gamePanel.gameState == gamePanel.playState) {
+            // Tetris game play
+            if(gamePanel.playManager.getCurrentGame() instanceof Tetris) {
+                //drawTutorial();
+            //    gamePanel.player.checkLevelUp();
+            }
+            // Maze game play
+            else if(gamePanel.playManager.getCurrentGame() instanceof Maze) {
+                drawMazeGame();
+            }
         }
         // PAUSE STATE:
         else if(gamePanel.gameState == gamePanel.pauseState) {
@@ -130,6 +138,9 @@ public class UI {
         }
     }
     public void drawTutorial(){
+        
+    }
+    public void drawMazeGame(){
         
     }
     public void drawTitleScreen(){
@@ -162,36 +173,7 @@ public class UI {
                     g2.drawImage( exitButton2 , x , y , null );
                 }
     }
-    public void drawGameOptionGameScreen(){
-        int x = 0;
-        int y = 0;
-        // DRAW MENU TITLE SCREEN:
-            g2.drawImage( titleScreen , x , y , null );
-        // DRAW BUTTON:
-            x += gamePanel.tileSize * 16;
-            y += gamePanel.tileSize * 5;
-            // TETRIS BUTTON:
-                if ( commandNum == 0 ) {
-                    g2.drawImage( playButton1 , x , y , null );
-                } else {
-                    g2.drawImage( playButton2 , x , y , null );
-                }
-
-            // MAZE BUTTON:
-                y += 82;
-                if ( commandNum == 1 ) {
-                    g2.drawImage( playButton1 , x , y , null );
-                } else {
-                    g2.drawImage( playButton2 , x , y , null );
-                }
-            // EXIT BUTTON:
-                y += 82;
-                if ( commandNum == 2 ) {
-                    g2.drawImage( exitButton1 , x , y , null );
-                } else {
-                    g2.drawImage( exitButton2 , x , y , null );
-                }
-    }
+    
     public void getUIImage(){
         // PAUSE SCREEN:
         pauseScreen = setup("PauseScreen", gamePanel.screenWidth, gamePanel.screenHeight);
@@ -507,7 +489,7 @@ public class UI {
         public void drawGameOverScreen(){
             g2.setColor(Color.yellow);
             g2.setFont(g2.getFont().deriveFont(50f));
-            g2.drawString("GameOver", PlayManager.left_x+130, PlayManager.top_y+320);
+            g2.drawString("GameOver", Tetris.left_x+130, Tetris.top_y+320);
         }
         public void drawSubWindow(int x, int y, int width, int height) {
 
