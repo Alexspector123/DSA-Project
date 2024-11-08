@@ -9,8 +9,8 @@ import java.util.*;
 
 import GameManage.Game;
 import Main.GamePanel;
-
-
+import Tetris.Mino.Block;
+import Tetris.Mino.Mino;
 import Tetris.Mino.*;
 
 public class Tetris extends Game {

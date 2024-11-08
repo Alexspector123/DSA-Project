@@ -9,8 +9,8 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.imageio.ImageIO;
 
-import Main_Tetris.Tetris;
 import Maze.Main_Maze.Maze;
+import Tetris.Main_Tetris.Tetris;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

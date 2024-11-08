@@ -2,8 +2,7 @@ package Main;
 
 import GameManage.Game;
 import GameManage.GameFactory;
-import Maze.Main_Maze.Maze;
-import Main_Tetris.Tetris;
+import Main.GamePanel;
 
 public class GameManager extends Game{
     private static GameManager instance;
