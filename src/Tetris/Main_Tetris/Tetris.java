@@ -5,9 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.*;
 
+import GameManage.Game;
 import Mino.Mino;
+import Mino.Block;
 
-public class PlayManager {
+public class Tetris extends Game {
     
     // Main Play Area
     final int WIDTH = 360;
@@ -41,7 +43,7 @@ public class PlayManager {
 
     GamePanel gamePanel;
 
-    public PlayManager(GamePanel gamePanel){
+    public Tetris(GamePanel gamePanel){
 
         this.gamePanel = gamePanel;
         // Main Play Area Frame
@@ -228,5 +230,8 @@ public class PlayManager {
                 effectY.clear();
             }
         }
+    }
+    public void end(){
+        
     }
 }
