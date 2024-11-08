@@ -3,6 +3,9 @@ package Mino;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import Main.KeyHandler;
+import Main_Tetris.Tetris;
+
 public class Mino {
     
     public Block block[] = new Block[4];
