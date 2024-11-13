@@ -3,6 +3,9 @@ package Main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import Main_Tetris.Tetris;
+import Maze.Main_Maze.Maze;
+
 public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
@@ -122,23 +125,27 @@ public class KeyHandler implements KeyListener {
         }
         // PLAY STATE
         public void playState(int code){
-            // W-A-S-D MOVEMENT:
-            if(code == KeyEvent.VK_W)
-            {
-                upPressed = true;
+            // Button for Tetris
+            if(gamePanel.playManager.getCurrentGame().getClass() == Tetris.class){
+                // W-A-S-D MOVEMENT:
+                if(code == KeyEvent.VK_W){
+                    upPressed = true;
+                }
+                if(code == KeyEvent.VK_A){
+                    leftPressed = true;
+                }
+                if(code == KeyEvent.VK_S){
+                    downPressed = true;
+                }
+                if(code == KeyEvent.VK_D){
+                    rightPressed = true;
+                }
             }
-            if(code == KeyEvent.VK_A)
-            {
-                leftPressed = true;
+            // Button for Maze
+            if(gamePanel.playManager.getCurrentGame().getClass() == Maze.class){
+
             }
-            if(code == KeyEvent.VK_S)
-            {
-                downPressed = true;
-            }
-            if(code == KeyEvent.VK_D)
-            {
-                rightPressed = true;
-            }
+
             if(code == KeyEvent.VK_ENTER){
                 enterPressed = true;
             } else if (code != KeyEvent.VK_ENTER){

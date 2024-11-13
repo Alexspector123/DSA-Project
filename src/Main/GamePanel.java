@@ -101,7 +101,6 @@ public class GamePanel extends JPanel implements Runnable{
             double nextDrawTime = System.nanoTime() + drawInterval;
 
             while ( gameThread != null ) {
-
                 // 1. UPDATE: Update information such as character positions,...
                     update();
                 // 2. DRAW: redraw the screen with the updated information
@@ -129,12 +128,10 @@ public class GamePanel extends JPanel implements Runnable{
         public void update() {
             
             if (gameState == playState) {
-                playManager.getCurrentGame().update();
-
-/*---------------------------------------------------------------*/
-
+                if(playManager.getCurrentGame() != null){
+                    playManager.getCurrentGame().update();
+                }
             }
-            //System.out.println(playManager.getCurrentGame());
         }
         public void paintComponent(Graphics graphics){
 

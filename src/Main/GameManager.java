@@ -18,6 +18,7 @@ public class GameManager extends Game{
     }
 
     public void setUp(GamePanel gamePanel) {
+        currentGame = null;
         this.gamePanel = gamePanel;
     }
 
@@ -29,8 +30,7 @@ public class GameManager extends Game{
         if(currentGame != null) {
             currentGame.end();
         }
-        currentGame = GameFactory.createNewGame(gameName, gamePanel);
-        System.out.println(currentGame.getClass());
+        this.currentGame = GameFactory.createNewGame(gameName, gamePanel);
     }
     public void stopGame() {
         if(currentGame != null) {

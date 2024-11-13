@@ -184,6 +184,13 @@ public class Tetris extends Game {
     }
     public void draw(Graphics2D graphics2D){
 
+        // Draw the Mino inside
+        for(int i=0; i<HEIGHT; i+=Block.SIZE){
+            for(int j=0; j<WIDTH; j+=Block.SIZE){   
+                graphics2D.drawRect(left_x + j, top_y + i, Block.SIZE, Block.SIZE);
+                }
+        }
+
         //Draw Play Area Frame
         graphics2D.setColor(Color.WHITE);
         graphics2D.setStroke(new BasicStroke(4f));

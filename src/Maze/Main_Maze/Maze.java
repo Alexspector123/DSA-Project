@@ -44,6 +44,7 @@ public class Maze extends Game {
     }
 
     public void update() {
+
         int newX = playerX + dx;
         int newY = playerY + dy;
         if (isValidMove(newX, newY)) {
