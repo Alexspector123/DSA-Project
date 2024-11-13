@@ -30,6 +30,7 @@ public class GameManager extends Game{
             currentGame.end();
         }
         currentGame = GameFactory.createNewGame(gameName, gamePanel);
+        System.out.println(currentGame.getClass());
     }
     public void stopGame() {
         if(currentGame != null) {

@@ -1,4 +1,4 @@
-package Tetris.Main_Tetris;
+package Main_Tetris;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,9 +9,7 @@ import java.util.*;
 
 import GameManage.Game;
 import Main.GamePanel;
-import Tetris.Mino.Block;
-import Tetris.Mino.Mino;
-import Tetris.Mino.*;
+import Mino.*;
 
 public class Tetris extends Game {
     

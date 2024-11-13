@@ -3,7 +3,7 @@ package GameManage;
 import Main.GameManager;
 import Main.GamePanel;
 import Maze.Main_Maze.Maze;
-import Tetris.Main_Tetris.Tetris;
+import Main_Tetris.Tetris;
 
 public class GameFactory {
     public static Game createNewGame(String gameName, GamePanel gamePanel) {
