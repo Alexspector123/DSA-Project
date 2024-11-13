@@ -143,7 +143,19 @@ public class KeyHandler implements KeyListener {
             }
             // Button for Maze
             if(gamePanel.playManager.getCurrentGame().getClass() == Maze.class){
-
+                // W-A-S-D MOVEMENT:
+                if(code == KeyEvent.VK_W){
+                    upPressed = true;
+                }
+                if(code == KeyEvent.VK_A){
+                    leftPressed = true;
+                }
+                if(code == KeyEvent.VK_S){
+                    downPressed = true;
+                }
+                if(code == KeyEvent.VK_D){
+                    rightPressed = true;
+                }
             }
 
             if(code == KeyEvent.VK_ENTER){

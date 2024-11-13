@@ -1,21 +1,18 @@
 package Maze.Main_Maze;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
-import java.util.List;
-import Main.GamePanel;
-import Maze.Map.Maze1;
-import javax.swing.Timer;
-
 import GameManage.Game;
+import Main.GamePanel;
+import Main.KeyHandler;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Maze extends Game {
-    GamePanel gamePanel;
+
     private static final int[][] maze = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 2, 0, 0, 0, 1, 0, 0, 0, 1},
+        {1, 2, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 1, 1, 0, 1, 0, 1, 0, 1},
         {1, 0, 0, 1, 0, 1, 0, 1, 0, 1},
         {1, 1, 0, 1, 0, 1, 0, 1, 0, 1},
@@ -26,131 +23,129 @@ public class Maze extends Game {
     };
 
     private static final int[] exit = {5, 8};  // Exit position
-    private static int playerX = 1, playerY = 1;  // Player position
-    private static int botX = 7, botY = 1;       // Bot position
-    private static List<int[]> botPath = new ArrayList<>(); // Bot calculated path
-    private Timer timer; // For refreshing the bot's movements
+    private int playerX = 1, playerY = 1;  // Player position
+    private int botX = 7, botY = 1;       // Bot position
+    private List<int[]> botPath = new ArrayList<>(); // Bot calculated path
+    private int tileSize = 60; // Size of each tile in the maze
 
-    private int dx = 0, dy = 0;
-    public Bot bot;
-    
-    public Maze(GamePanel gamePanel) {
+    GamePanel gamePanel;
+    KeyHandler keyHandler;
+    Bot bot;
+
+    public Maze(GamePanel gamePanel){
         this.gamePanel = gamePanel;
+        this.keyHandler = gamePanel.keyHandler;
         this.bot = Bot.getInstance();
-
-        botPath = calculateShortestPath(botX, botY);
-        timer = new Timer(1000, e -> updateBot());
-        timer.start();
+        //botPath = bot.calculateShortestPath(botX, botY, maze, exit);
     }
 
-    public void update() {
+    public void update(){
+        // Handle player input
+        int dx = 0, dy = 0;
+        boolean playerMoved = false;
+        if(keyHandler.upPressed){
+            dx = -1;
+            dy = 0;
+            playerMoved = true;
+        } else if(keyHandler.downPressed){
+            dx = 1;
+            dy = 0;
+            playerMoved = true;
+        } else if(keyHandler.leftPressed){
+            dx = 0;
+            dy = -1;
+            playerMoved = true;
+        } else if(keyHandler.rightPressed){
+            dx = 0;
+            dy = 1;
+            playerMoved = true;
+        }
+        KeyHandler.upPressed = false;
+        KeyHandler.downPressed = false;
+        KeyHandler.leftPressed = false;
+        KeyHandler.rightPressed = false;
 
         int newX = playerX + dx;
         int newY = playerY + dy;
-        if (isValidMove(newX, newY)) {
+        if(isValidMove(newX, newY)){
             playerX = newX;
             playerY = newY;
-        } else {
-            System.out.println("You hit a wall!");
-        }
 
-        gamePanel.repaint();
-        checkWinner();
+            // Check if player reaches exit
+            if(playerX == exit[0] && playerY == exit[1]){
+                System.out.println("Player wins!");
+                gamePanel.gameState = gamePanel.gameOptionState;
+                return;
+            }
+
+            // Check if player meets bot
+            if(playerX == botX && playerY == botY){
+                gamePanel.gameState = gamePanel.gameOverState;
+                return;
+            }
+
+            // Move bot only when player moves
+            //moveBot();
+        }
     }
 
-    private void updateBot() {
-        if (!botPath.isEmpty()) {
+    private void moveBot(){
+        // Recalculate bot's path if necessary
+        if(botPath.isEmpty() || botX == playerX && botY == playerY){
+            botPath = bot.calculateShortestPath(botX, botY, maze, exit);
+        }
+
+        if(!botPath.isEmpty()){
             int[] nextStep = botPath.remove(0);
             botX = nextStep[0];
             botY = nextStep[1];
+
+            // Check if bot reaches exit
+            if(botX == exit[0] && botY == exit[1]){
+                System.out.println("Bot wins!");
+                gamePanel.gameState = gamePanel.gameOverState;
+                return;
+            }
+
+            // Check if bot meets player
+            if(botX == playerX && botY == playerY){
+                gamePanel.gameState = gamePanel.gameOverState;
+                return;
+            }
         }
-        gamePanel.repaint();
-        checkWinner();
     }
 
-    public void draw(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        int tileSize = 60; // Size of each tile in the maze
-
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
-                if (maze[i][j] == 1) {
-                    g2d.setColor(Color.BLACK);
-                    g2d.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                } else if (i == exit[0] && j == exit[1]) {
-                    g2d.setColor(Color.GREEN);
-                    g2d.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+    public void draw(Graphics2D graphics2D){
+        // Draw maze
+        for(int i = 0; i < maze.length; i++){
+            for(int j = 0; j < maze[i].length; j++){
+                if(maze[i][j] == 1){
+                    graphics2D.setColor(Color.BLACK);
+                    graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                } else if(i == exit[0] && j == exit[1]){
+                    graphics2D.setColor(Color.GREEN);
+                    graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                } else {
+                    graphics2D.setColor(Color.WHITE);
+                    graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 }
             }
         }
 
         // Draw player
-        g2d.setColor(Color.BLUE);
-        g2d.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
+        graphics2D.setColor(Color.BLUE);
+        graphics2D.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
 
         // Draw bot
-        g2d.setColor(Color.RED);
-        g2d.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+        graphics2D.setColor(Color.RED);
+        graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
     }
 
-    public void end() {
-
+    public void end(){
+        // Any cleanup code if necessary
     }
 
-    private void checkWinner() {
-        
-    }
-
-    private static boolean isValidMove(int x, int y) {
+    private boolean isValidMove(int x, int y){
         return x >= 0 && x < maze.length && y >= 0 && y < maze[0].length && maze[x][y] != 1;
-    }
-
-    private static List<int[]> calculateShortestPath(int startX, int startY) {
-        int rows = maze.length;
-        int cols = maze[0].length;
-
-        int[][] dist = new int[rows][cols];
-        for (int[] row : dist) {
-            Arrays.fill(row, Integer.MAX_VALUE);
-        }
-        dist[startX][startY] = 0;
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> dist[a[0]][a[1]]));
-        pq.add(new int[]{startX, startY});
-
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};  // Up, Down, Left, Right
-        int[][][] parent = new int[rows][cols][2];  // Store parent for path reconstruction
-
-        while (!pq.isEmpty()) {
-            int[] current = pq.poll();
-            int x = current[0], y = current[1];
-
-            if (x == exit[0] && y == exit[1]) break;  // Exit found
-
-            for (int[] dir : directions) {
-                int newX = x + dir[0], newY = y + dir[1];
-                if (isValidMove(newX, newY) && dist[newX][newY] > dist[x][y] + 1) {
-                    dist[newX][newY] = dist[x][y] + 1;
-                    parent[newX][newY][0] = x;
-                    parent[newX][newY][1] = y;
-                    pq.add(new int[]{newX, newY});
-                }
-            }
-        }
-
-        // Reconstruct path from the bot to the exit
-        List<int[]> path = new ArrayList<>();
-        int x = exit[0], y = exit[1];
-        while (!(x == startX && y == startY)) {
-            path.add(0, new int[]{x, y});
-            int tempX = parent[x][y][0];
-            int tempY = parent[x][y][1];
-            x = tempX;
-            y = tempY;
-        }
-
-        return path;
     }
 }
