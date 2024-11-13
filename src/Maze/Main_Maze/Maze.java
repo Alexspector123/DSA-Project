@@ -1,32 +1,24 @@
 package Maze.Main_Maze;
 
 import java.awt.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 import GameManage.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
-import java.util.List;
-import java.util.ArrayList;
+import Maze.Map.MapFactory;
 
 public class Maze extends Game {
+    private MazeNode head;         
+    private MazeNode currentMaze;   
+    private int[][] maze;           
+    private int[] exit;            
 
-    private static final int[][] maze = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 1, 1, 0, 1, 0, 1, 0, 1},
-        {1, 0, 0, 1, 0, 1, 0, 1, 0, 1},
-        {1, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-        {1, 0, 0, 0, 0, 1, 0, 1, 3, 1},
-        {1, 0, 1, 1, 1, 1, 0, 1, 1, 1},
-        {1, 4, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
-
-    private static final int[] exit = {5, 8};  // Exit position
-    private int playerX = 1, playerY = 1;  // Player position
-    private int botX = 7, botY = 1;       // Bot position
-    private List<int[]> botPath = new ArrayList<>(); // Bot calculated path
-    private int tileSize = 60; // Size of each tile in the maze
+    private int playerX, playerY;  
+    private int botX, botY;         
+    private List<int[]> botPath;    
+    private int tileSize = 60;      
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -36,26 +28,41 @@ public class Maze extends Game {
         this.gamePanel = gamePanel;
         this.keyHandler = gamePanel.keyHandler;
         this.bot = Bot.getInstance();
-        //botPath = bot.calculateShortestPath(botX, botY, maze, exit);
+
+        // Initialize maze linked list using MapFactory
+        head = MapFactory.createMazeLinkedList();
+
+        // Set the current maze to the head of the list
+        currentMaze = head;
+        loadCurrentMaze();
+    }
+
+    private void loadCurrentMaze() {
+        this.maze = currentMaze.maze;
+        this.exit = currentMaze.exit;
+        this.playerX = currentMaze.start[0];
+        this.playerY = currentMaze.start[1];
+        //this.botX = currentMaze.botStart[0];
+        //this.botY = currentMaze.botStart[1];
+        //this.botPath = bot.calculateShortestPath(botX, botY, maze, exit);
     }
 
     public void update(){
-        // Handle player input
         int dx = 0, dy = 0;
         boolean playerMoved = false;
-        if(keyHandler.upPressed){
+        if(KeyHandler.upPressed){
             dx = -1;
             dy = 0;
             playerMoved = true;
-        } else if(keyHandler.downPressed){
+        } else if(KeyHandler.downPressed){
             dx = 1;
             dy = 0;
             playerMoved = true;
-        } else if(keyHandler.leftPressed){
+        } else if(KeyHandler.leftPressed){
             dx = 0;
             dy = -1;
             playerMoved = true;
-        } else if(keyHandler.rightPressed){
+        } else if(KeyHandler.rightPressed){
             dx = 0;
             dy = 1;
             playerMoved = true;
@@ -70,12 +77,17 @@ public class Maze extends Game {
         if(isValidMove(newX, newY)){
             playerX = newX;
             playerY = newY;
-
-            // Check if player reaches exit
             if(playerX == exit[0] && playerY == exit[1]){
-                System.out.println("Player wins!");
-                gamePanel.gameState = gamePanel.gameOptionState;
-                return;
+                // Move to next maze if available
+                if(currentMaze.next != null){
+                    currentMaze = currentMaze.next;
+                    loadCurrentMaze();
+                } else {
+                    // player wins the game
+                    System.out.println("Player wins the game!");
+                    gamePanel.gameState = gamePanel.gameOptionState;
+                    return;
+                }
             }
 
             // Check if player meets bot
@@ -90,7 +102,6 @@ public class Maze extends Game {
     }
 
     private void moveBot(){
-        // Recalculate bot's path if necessary
         if(botPath.isEmpty() || botX == playerX && botY == playerY){
             botPath = bot.calculateShortestPath(botX, botY, maze, exit);
         }
@@ -142,7 +153,6 @@ public class Maze extends Game {
     }
 
     public void end(){
-        // Any cleanup code if necessary
     }
 
     private boolean isValidMove(int x, int y){
