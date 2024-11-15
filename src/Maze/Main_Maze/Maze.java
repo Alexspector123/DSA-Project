@@ -142,7 +142,7 @@ public class Maze extends Game {
             playerX = newX;
             playerY = newY;
     
-            // Update animation frames when the player moves
+            // Update animation frames when player move
             spriteCounter++;
             if (spriteCounter > 8) {
                 spriteNum++;
@@ -152,7 +152,7 @@ public class Maze extends Game {
                 spriteCounter = 0;
             }
     
-            // Check if player reaches exit
+            // Check player reache exit
             if(playerX == exit[0] && playerY == exit[1]){
                 // Move to next maze if available
                 if(currentMaze.next != null){
@@ -181,9 +181,8 @@ public class Maze extends Game {
     }    
 
     private void moveBot(){
-        // Move bot 1
         if(botPath.isEmpty() || (botX == playerX && botY == playerY)){
-            botPath = botD.calculateShortestPath(botX, botY, maze, exit);
+            botPath = botD.calculateShortestPath(botX, botY, maze, new int[]{playerX, playerY});
         }
 
         if(!botPath.isEmpty()){
@@ -191,41 +190,39 @@ public class Maze extends Game {
             botX = nextStep[0];
             botY = nextStep[1];
 
-            // Check if bot reaches exit
-            if(botX == exit[0] && botY == exit[1]){
-                System.out.println("Bot 1 wins!");
-                gamePanel.gameState = gamePanel.gameOverState;
-                return;
-            }
-
-            // Check if bot meets player
+            // Check if bot reaches player
             if(botX == playerX && botY == playerY){
-                System.out.println("Bot 1 caught the player!");
+                System.out.println("BotA caught the player!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
         }
 
-        // Move bot 2
+        // Move botB (Normal movement)
         if(bot2Path.isEmpty() || (bot2X == playerX && bot2Y == playerY)){
             bot2Path = botA.calculateShortestPath(bot2X, bot2Y, maze, exit);
         }
 
         if(!bot2Path.isEmpty()){
+            int teleDistance = Math.min(3, botPath.size());
             int[] nextStep = bot2Path.remove(0);
             bot2X = nextStep[0];
             bot2Y = nextStep[1];
 
+            for (int i = 0; i < teleDistance; i++) {
+                botPath.remove(0);
+            }
+
             // Check if bot reaches exit
             if(bot2X == exit[0] && bot2Y == exit[1]){
-                System.out.println("Bot 2 wins!");
+                System.out.println("BotB wins!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
 
             // Check if bot meets player
             if(bot2X == playerX && bot2Y == playerY){
-                System.out.println("Bot 2 caught the player!");
+                System.out.println("BotB caught the player!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
@@ -233,7 +230,8 @@ public class Maze extends Game {
 
         // Optional: Check if bots collide with each other
         if(botX == bot2X && botY == bot2Y){
-            // Insert the handle function later
+            System.out.println("Bots have collided!");
+            // Ínert the function handle this later
         }
     }
 
@@ -252,6 +250,18 @@ public class Maze extends Game {
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 }
             }
+        }
+
+        // Draw botA's path 
+        if (botPath != null && !botPath.isEmpty()) {
+            Graphics2D g2d = (Graphics2D) graphics2D.create();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); 
+            g2d.setColor(Color.RED);
+
+            for (int[] step : botPath) {
+                g2d.fillRect(step[1] * tileSize, step[0] * tileSize, tileSize, tileSize);
+            }
+            g2d.dispose();
         }
     
         // Draw player with animation
@@ -307,13 +317,13 @@ public class Maze extends Game {
             graphics2D.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
         }
 
-        // Draw bot 1
-        graphics2D.setColor(Color.RED);
-        graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
- 
-        // Draw bot 2
-        graphics2D.setColor(Color.ORANGE); // Use a different color to distinguish the second bot
-        graphics2D.fillOval(bot2Y * tileSize + 10, bot2X * tileSize + 10, tileSize - 20, tileSize - 20);
+       // Draw botA effect
+       graphics2D.setColor(Color.MAGENTA);
+       graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+
+       // Draw botB
+       graphics2D.setColor(Color.ORANGE); 
+       graphics2D.fillOval(bot2Y * tileSize + 10, bot2X * tileSize + 10, tileSize - 20, tileSize - 20);
     }
     
 
