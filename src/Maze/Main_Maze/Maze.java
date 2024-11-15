@@ -15,6 +15,7 @@ import GameManage.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
 import Main.UtilityTool;
+import Maze.Bot.Bot_A;
 import Maze.Bot.Bot_D;
 import Maze.Map.MapFactory;
 
@@ -29,6 +30,9 @@ public class Maze extends Game {
     private List<int[]> botPath;    
     private int tileSize = 60;      
 
+    private int bot2X, bot2Y;       // Bot 2 position
+    private List<int[]> bot2Path;
+
     private BufferedImage up1, up2, up3;
     private BufferedImage down1, down2, down3;
     private BufferedImage left1, left2, left3;
@@ -39,14 +43,19 @@ public class Maze extends Game {
     private int spriteNum = 1;
     private int spriteCounter = 0;
 
+    private int botMoveCounter = 0;
+    private int botMoveDelay = 30; 
+
     GamePanel gamePanel;
     KeyHandler keyHandler;
-    Bot_D bot;
+    Bot_D botD;
+    Bot_A botA;
 
     public Maze(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         this.keyHandler = gamePanel.keyHandler;
-        this.bot = Bot_D.getInstance();
+        this.botD = Bot_D.getInstance();
+        this.botA = Bot_A.getInstance();
 
         // Initialize maze linked list using MapFactory
         head = MapFactory.createMazeLinkedList();
@@ -62,9 +71,37 @@ public class Maze extends Game {
         this.exit = currentMaze.exit;
         this.playerX = currentMaze.start[0];
         this.playerY = currentMaze.start[1];
-        //this.botX = currentMaze.botStart[0];
-        //this.botY = currentMaze.botStart[1];
-        //this.botPath = bot.calculateShortestPath(botX, botY, maze, exit);
+        List<int[]> botStarts = new ArrayList<>();
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (maze[i][j] == 4) {
+                    botStarts.add(new int[]{i, j});
+                    // Reset maze value to 0 to avoid treating it as wall
+                    maze[i][j] = 0;
+                }
+            }
+        }
+
+        if (botStarts.size() >= 2) {
+            this.botX = botStarts.get(0)[0];
+            this.botY = botStarts.get(0)[1];
+            this.bot2X = botStarts.get(1)[0];
+            this.bot2Y = botStarts.get(1)[1];
+        } else if (botStarts.size() == 1) {
+            this.botX = botStarts.get(0)[0];
+            this.botY = botStarts.get(0)[1];
+            this.bot2X = maze.length - 2;
+            this.bot2Y = maze[0].length - 2;
+        } else {
+            this.botX = 1;
+            this.botY = 1;
+            this.bot2X = maze.length - 2;
+            this.bot2Y = maze[0].length - 2;
+        }
+
+        
+        this.botPath = botA.calculateShortestPath(botX, botY, maze, exit);
+        this.bot2Path = botD.calculateShortestPath(bot2X, bot2Y, maze, exit);
     }
 
     public void update(){
@@ -121,25 +158,32 @@ public class Maze extends Game {
                 if(currentMaze.next != null){
                     currentMaze = currentMaze.next;
                     loadCurrentMaze();
-                } else {
+                } 
+                else {
                     // Player wins the game
-                    System.out.println("Player wins the game!");
+                    System.out.println("Player wins");
                     gamePanel.gameState = gamePanel.gameOverState;
                     return;
                 }
             }
             System.out.println("Player position before move: (" + playerX + ", " + playerY + ")");
             // Move bot only when player moves
-            //moveBot();
-        } else {
+            botMoveCounter++;
+            if (botMoveCounter >= botMoveDelay) {
+                botMoveCounter = 0;
+                moveBot();
+            }
+        } 
+        else {
             // Reset animation if player cannot move
             spriteNum = 1;
         }
     }    
 
     private void moveBot(){
-        if(botPath.isEmpty() || botX == playerX && botY == playerY){
-            botPath = bot.calculateShortestPath(botX, botY, maze, exit);
+        // Move bot 1
+        if(botPath.isEmpty() || (botX == playerX && botY == playerY)){
+            botPath = botD.calculateShortestPath(botX, botY, maze, exit);
         }
 
         if(!botPath.isEmpty()){
@@ -149,16 +193,47 @@ public class Maze extends Game {
 
             // Check if bot reaches exit
             if(botX == exit[0] && botY == exit[1]){
-                System.out.println("Bot wins!");
+                System.out.println("Bot 1 wins!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
 
             // Check if bot meets player
             if(botX == playerX && botY == playerY){
+                System.out.println("Bot 1 caught the player!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
+        }
+
+        // Move bot 2
+        if(bot2Path.isEmpty() || (bot2X == playerX && bot2Y == playerY)){
+            bot2Path = botA.calculateShortestPath(bot2X, bot2Y, maze, exit);
+        }
+
+        if(!bot2Path.isEmpty()){
+            int[] nextStep = bot2Path.remove(0);
+            bot2X = nextStep[0];
+            bot2Y = nextStep[1];
+
+            // Check if bot reaches exit
+            if(bot2X == exit[0] && bot2Y == exit[1]){
+                System.out.println("Bot 2 wins!");
+                gamePanel.gameState = gamePanel.gameOverState;
+                return;
+            }
+
+            // Check if bot meets player
+            if(bot2X == playerX && bot2Y == playerY){
+                System.out.println("Bot 2 caught the player!");
+                gamePanel.gameState = gamePanel.gameOverState;
+                return;
+            }
+        }
+
+        // Optional: Check if bots collide with each other
+        if(botX == bot2X && botY == bot2Y){
+            // Insert the handle function later
         }
     }
 
@@ -232,9 +307,13 @@ public class Maze extends Game {
             graphics2D.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
         }
 
-        // Draw bot
+        // Draw bot 1
         graphics2D.setColor(Color.RED);
         graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+ 
+        // Draw bot 2
+        graphics2D.setColor(Color.ORANGE); // Use a different color to distinguish the second bot
+        graphics2D.fillOval(bot2Y * tileSize + 10, bot2X * tileSize + 10, tileSize - 20, tileSize - 20);
     }
     
 
