@@ -1,15 +1,15 @@
-package Maze.Main_Maze;
+package Maze.Bot;
 
 import java.util.*;
 
-public class Bot {
-    private static Bot instance;
+public class Bot_D {
+    private static Bot_D instance;
 
-    private Bot() {}
+    private Bot_D() {}
 
-    public static Bot getInstance() {
+    public static Bot_D getInstance() {
         if(instance == null) {
-            instance = new Bot();
+            instance = new Bot_D();
         }
         return instance;
     }

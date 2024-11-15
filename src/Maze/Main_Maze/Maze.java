@@ -15,6 +15,7 @@ import GameManage.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
 import Main.UtilityTool;
+import Maze.Bot.Bot_D;
 import Maze.Map.MapFactory;
 
 public class Maze extends Game {
@@ -40,12 +41,12 @@ public class Maze extends Game {
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
-    Bot bot;
+    Bot_D bot;
 
     public Maze(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         this.keyHandler = gamePanel.keyHandler;
-        this.bot = Bot.getInstance();
+        this.bot = Bot_D.getInstance();
 
         // Initialize maze linked list using MapFactory
         head = MapFactory.createMazeLinkedList();
