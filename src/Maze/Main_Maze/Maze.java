@@ -15,8 +15,7 @@ import GameManage.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
 import Main.UtilityTool;
-import Maze.Bot.Bot_A;
-import Maze.Bot.Bot_D;
+import Maze.Bot.*;
 import Maze.Map.MapFactory;
 
 public class Maze extends Game {
