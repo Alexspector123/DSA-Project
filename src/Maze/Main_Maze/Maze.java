@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -38,10 +37,20 @@ public class Maze extends Game {
     private BufferedImage left1, left2, left3;
     private BufferedImage right1, right2, right3;
 
+    private BufferedImage up1_A, up2_A, up3_A;
+    private BufferedImage down1_A, down2_A, down3_A;
+    private BufferedImage left1_A, left2_A, left3_A;
+    private BufferedImage right1_A, right2_A, right3_A;
+
     // Animation variables
     private String direction = "down";
     private int spriteNum = 1;
     private int spriteCounter = 0;
+
+    // Animation variables of bot A
+    private String botADirection = "down";
+    private int botASpriteNum = 1;
+    private int botASprite = 0;
 
     private int botMoveCounter = 0;
     private int botMoveDelay = 30; 
@@ -64,6 +73,7 @@ public class Maze extends Game {
         currentMaze = head;
         loadCurrentMaze();
         getBasePlayerImage();
+        getBaseBotAImage();
     }
 
     private void loadCurrentMaze() {
@@ -187,9 +197,38 @@ public class Maze extends Game {
 
         if(!botPath.isEmpty()){
             int[] nextStep = botPath.remove(0);
+            int dx = nextStep[0] - botX;
+            int dy = nextStep[1] - botY;
+        
+            if(dx == -1) {
+                botADirection = "up";
+            } 
+            else if(dx == 1) {
+                botADirection = "down";
+            } 
+            else if(dy == -1) {
+                botADirection = "left";
+            } 
+            else if(dy == 1) {
+                botADirection = "right";
+            } 
+            else {
+                botADirection = "down"; 
+            }
+        
             botX = nextStep[0];
             botY = nextStep[1];
-
+        
+            // Update bot A's animation frames
+            botASprite++;
+            if (botASprite > 8) {
+                botASpriteNum++;
+                if (botASpriteNum > 3) {
+                    botASpriteNum = 1;
+                }
+                botASprite = 0;
+            }
+        
             // Check if bot reaches player
             if(botX == playerX && botY == playerY){
                 System.out.println("BotA caught the player!");
@@ -252,13 +291,13 @@ public class Maze extends Game {
             }
         }
 
-        // Draw botA's path 
-        if (botPath != null && !botPath.isEmpty()) {
+        // Draw botD's path 
+        if (bot2Path != null && !bot2Path.isEmpty()) {
             Graphics2D g2d = (Graphics2D) graphics2D.create();
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); 
             g2d.setColor(Color.RED);
 
-            for (int[] step : botPath) {
+            for (int[] step : bot2Path) {
                 g2d.fillRect(step[1] * tileSize, step[0] * tileSize, tileSize, tileSize);
             }
             g2d.dispose();
@@ -310,16 +349,73 @@ public class Maze extends Game {
 
         if (image != null) {
             graphics2D.drawImage(image, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
-        } else {
+        } 
+        else {
             System.out.println("Image is null for direction: " + direction + ", spriteNum: " + spriteNum);
-            // Fallback to drawing a simple circle if image is null
             graphics2D.setColor(Color.BLUE);
             graphics2D.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
         }
 
-       // Draw botA effect
-       graphics2D.setColor(Color.MAGENTA);
-       graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+       // Draw botA 
+       BufferedImage botAImage = null;
+        switch (botADirection) {
+            case "up":
+                if (botASpriteNum == 1) {
+                    botAImage = up1_A;
+                } 
+                else if (botASpriteNum == 2) {
+                    botAImage = up2_A;
+                } 
+                else if (botASpriteNum == 3) {
+                    botAImage = up3_A;
+                }
+                break;
+            case "down":
+                if (botASpriteNum == 1) {
+                    botAImage = down1_A;
+                } 
+                else if (botASpriteNum == 2) {
+                    botAImage = down2_A;
+                } 
+                else if (botASpriteNum == 3) {
+                    botAImage = down3_A;
+                }
+                break;
+            case "left":
+                if (botASpriteNum == 1) {
+                    botAImage = left1_A;
+                } 
+                else if (botASpriteNum == 2) {
+                    botAImage = left2_A;
+                } 
+                else if (botASpriteNum == 3) {
+                    botAImage = left3_A;
+                }
+                break;
+            case "right":
+                if (botASpriteNum == 1) {
+                    botAImage = right1_A;
+                } 
+                else if (botASpriteNum == 2) {
+                    botAImage = right2_A;
+                } 
+                else if (botASpriteNum == 3) {
+                    botAImage = right3_A;
+                }
+                break;
+            default:
+                botAImage = down1_A;
+                break;
+        }
+
+        if (botAImage != null) {
+            graphics2D.drawImage(botAImage, botY * tileSize, botX * tileSize, tileSize, tileSize, null);
+        } 
+        else {
+            System.out.println("BotA Image is null for direction: " + botADirection + ", spriteNum: " + botASpriteNum);
+            graphics2D.setColor(Color.BLUE);
+            graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+        }
 
        // Draw botB
        graphics2D.setColor(Color.ORANGE); 
@@ -340,21 +436,34 @@ public class Maze extends Game {
 
     public void getBasePlayerImage(){
         // PLAYER WARRIOR IMAGES:
-            down1 = setupPlayerWarrior("down_1");
-            down2 = setupPlayerWarrior("down_2");
-            down3 = setupPlayerWarrior("down_3");
+        down1 = setupPlayerWarrior("down_1");
+        down2 = setupPlayerWarrior("down_2");
+        down3 = setupPlayerWarrior("down_3");
+        left1 = setupPlayerWarrior("left_1");
+        left2 = setupPlayerWarrior("left_2");
+        left3 = setupPlayerWarrior("left_3");
+        right1 = setupPlayerWarrior("right_1");
+        right2 = setupPlayerWarrior("right_2");
+        right3 = setupPlayerWarrior("right_3");
+        up1 = setupPlayerWarrior("up_1");
+        up2 = setupPlayerWarrior("up_2");
+        up3 = setupPlayerWarrior("up_3");
+    }
 
-            left1 = setupPlayerWarrior("left_1");
-            left2 = setupPlayerWarrior("left_2");
-            left3 = setupPlayerWarrior("left_3");
-
-            right1 = setupPlayerWarrior("right_1");
-            right2 = setupPlayerWarrior("right_2");
-            right3 = setupPlayerWarrior("right_3");
-
-            up1 = setupPlayerWarrior("up_1");
-            up2 = setupPlayerWarrior("up_2");
-            up3 = setupPlayerWarrior("up_3");
+    public void getBaseBotAImage(){
+        // BOT A IMAGES:
+        down1_A = setupBotA("down_1");
+        down2_A = setupBotA("down_2");
+        down3_A = setupBotA("down_3");
+        left1_A = setupBotA("left_1");
+        left2_A = setupBotA("left_2");
+        left3_A = setupBotA("left_3");
+        right1_A = setupBotA("right_1");
+        right2_A = setupBotA("right_2");
+        right3_A = setupBotA("right_3");
+        up1_A = setupBotA("up_1");
+        up2_A = setupBotA("up_2");
+        up3_A = setupBotA("up_3");
 
     }
 
@@ -364,6 +473,23 @@ public class Maze extends Game {
         BufferedImage image = null;
 
         String filePath = "res/Entities/Player_Warrior/" + imagePath + ".png";
+        File imageFile = new File(filePath);
+
+        try (FileInputStream readImage = new FileInputStream(imageFile)) {
+            image = ImageIO.read(readImage);
+            image = uTool.scaleImage(image,gamePanel.tileSize + 16, gamePanel.tileSize + 16);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public BufferedImage setupBotA(String imagePath) {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        String filePath = "res/Entities/Bot_A/" + imagePath + ".png";
         File imageFile = new File(filePath);
 
         try (FileInputStream readImage = new FileInputStream(imageFile)) {

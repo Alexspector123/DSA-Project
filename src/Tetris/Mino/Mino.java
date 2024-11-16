@@ -111,7 +111,7 @@ public class Mino {
             int TargetX = Tetris.staticBlocks.get(i).x;
             int TargetY = Tetris.staticBlocks.get(i).y;
 
-            for(int j=0; j<block.length; j++){
+            for(int j = 0; j < block.length; j++){
                 if(block[j].x == TargetX && block[j].y + Block.SIZE == TargetY){
                     bottomCollision = true;
                 }
