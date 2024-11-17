@@ -25,6 +25,7 @@ public class MapFactory {
             },
             new int[]{1, 1},
             new int[]{7, 1},   
+            new int[]{7, 1},
             new int[]{5, 8}    
         );
 
@@ -46,7 +47,8 @@ public class MapFactory {
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             },
             new int[] {1, 1},   
-            new int[] {7, 8},   
+            new int[] {7, 8}, 
+            new int[]{7, 1},  
             new int[] {1, 8}    
         );
 
@@ -69,6 +71,7 @@ public class MapFactory {
             },
             new int[] {1, 1}, 
             new int[] {7, 8}, 
+            new int[]{7, 1},
             new int[] {1, 8}  
         );
 
@@ -91,6 +94,7 @@ public class MapFactory {
             },
             new int[] {1, 1},   
             new int[] {7, 8},   
+            new int[]{7, 1},
             new int[] {1, 8}    
         );
 

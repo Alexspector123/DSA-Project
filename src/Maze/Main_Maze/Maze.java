@@ -24,13 +24,22 @@ public class Maze extends Game {
     private int[][] maze;           
     private int[] exit;            
 
-    private int playerX, playerY;  
-    private int botX, botY;         
-    private List<int[]> botPath;    
+    private int playerX, playerY;     
     private int tileSize = 60;      
 
-    private int bot2X, bot2Y;       // Bot 2 position
-    private List<int[]> bot2Path;
+    // Bot D variables
+    private int botDX, botDY;       
+    private List<int[]> botDPath;    
+    private String botDDirection = "down";
+    private int botDSpriteNum = 1;
+    private int botDSprite = 0;
+
+    // Bot A variables
+    private int botAX, botAY;       
+    private List<int[]> botAPath;
+    private String botADirection = "down";
+    private int botASpriteNum = 1;
+    private int botASprite = 0;
 
     private BufferedImage up1, up2, up3;
     private BufferedImage down1, down2, down3;
@@ -42,18 +51,20 @@ public class Maze extends Game {
     private BufferedImage left1_A, left2_A, left3_A;
     private BufferedImage right1_A, right2_A, right3_A;
 
+    private BufferedImage up1_D, up2_D, up3_D;
+    private BufferedImage down1_D, down2_D, down3_D;
+    private BufferedImage left1_D, left2_D, left3_D;
+    private BufferedImage right1_D, right2_D, right3_D;
+
     // Animation variables
     private String direction = "down";
     private int spriteNum = 1;
     private int spriteCounter = 0;
 
-    // Animation variables of bot A
-    private String botADirection = "down";
-    private int botASpriteNum = 1;
-    private int botASprite = 0;
-
-    private int botMoveCounter = 0;
-    private int botMoveDelay = 30; 
+    private int botDMoveCounter = 0;
+    private int botAMoveCounter = 0;
+    private int botMoveDelayD = 30;
+    private int botMoveDelayA = 50; 
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -74,6 +85,7 @@ public class Maze extends Game {
         loadCurrentMaze();
         getBasePlayerImage();
         getBaseBotAImage();
+        getBaseBotDImage();
     }
 
     private void loadCurrentMaze() {
@@ -81,37 +93,31 @@ public class Maze extends Game {
         this.exit = currentMaze.exit;
         this.playerX = currentMaze.start[0];
         this.playerY = currentMaze.start[1];
-        List<int[]> botStarts = new ArrayList<>();
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
-                if (maze[i][j] == 4) {
-                    botStarts.add(new int[]{i, j});
-                    // Reset maze value to 0 to avoid treating it as wall
-                    maze[i][j] = 0;
-                }
-            }
+    
+        // Bot D's starting position
+        if (currentMaze.botStartD != null) {
+            this.botDX = currentMaze.botStartD[0];
+            this.botDY = currentMaze.botStartD[1];
         }
-
-        if (botStarts.size() >= 2) {
-            this.botX = botStarts.get(0)[0];
-            this.botY = botStarts.get(0)[1];
-            this.bot2X = botStarts.get(1)[0];
-            this.bot2Y = botStarts.get(1)[1];
-        } else if (botStarts.size() == 1) {
-            this.botX = botStarts.get(0)[0];
-            this.botY = botStarts.get(0)[1];
-            this.bot2X = maze.length - 2;
-            this.bot2Y = maze[0].length - 2;
-        } else {
-            this.botX = 1;
-            this.botY = 1;
-            this.bot2X = maze.length - 2;
-            this.bot2Y = maze[0].length - 2;
+        else {
+            // Default 
+            this.botDX = 1;
+            this.botDY = 1;
         }
-
-        
-        this.botPath = botA.calculateShortestPath(botX, botY, maze, exit);
-        this.bot2Path = botD.calculateShortestPath(bot2X, bot2Y, maze, exit);
+    
+        // Bot A's starting position
+        if (currentMaze.botStartA != null) {
+            this.botAX = currentMaze.botStartA[0];
+            this.botAY = currentMaze.botStartA[1];
+        } 
+        else {
+            // Default 
+            this.botAX = maze.length - 2;
+            this.botAY = maze[0].length - 2;
+        }
+    
+        this.botDPath = botD.calculateShortestPath(botDX, botDY, maze, exit);
+        this.botAPath = botA.calculateShortestPath(botAX, botAY, maze, exit);
     }
 
     public void update(){
@@ -123,17 +129,20 @@ public class Maze extends Game {
             dy = 0;
             direction = "up"; // Update direction
             playerMoved = true;
-        } else if(KeyHandler.downPressed){
+        } 
+        else if(KeyHandler.downPressed){
             dx = 1;
             dy = 0;
             direction = "down"; // Update direction
             playerMoved = true;
-        } else if(KeyHandler.leftPressed){
+        } 
+        else if(KeyHandler.leftPressed){
             dx = 0;
             dy = -1;
             direction = "left"; // Update direction
             playerMoved = true;
-        } else if(KeyHandler.rightPressed){
+        } 
+        else if(KeyHandler.rightPressed){
             dx = 0;
             dy = 1;
             direction = "right"; // Update direction
@@ -176,12 +185,17 @@ public class Maze extends Game {
                     return;
                 }
             }
-            System.out.println("Player position before move: (" + playerX + ", " + playerY + ")");
-            // Move bot only when player moves
-            botMoveCounter++;
-            if (botMoveCounter >= botMoveDelay) {
-                botMoveCounter = 0;
-                moveBot();
+
+            // Move bot 
+            botDMoveCounter++;
+            if (botDMoveCounter >= botMoveDelayD) {
+                botDMoveCounter = 0;
+                moveBotD();
+            }
+            botAMoveCounter++;
+            if (botAMoveCounter >= botMoveDelayA) {
+                botAMoveCounter = 0;
+                moveBotA();
             }
         } 
         else {
@@ -190,16 +204,19 @@ public class Maze extends Game {
         }
     }    
 
-    private void moveBot(){
-        if(botPath.isEmpty() || (botX == playerX && botY == playerY)){
-            botPath = botD.calculateShortestPath(botX, botY, maze, new int[]{playerX, playerY});
+    private void moveBotA() {
+        // Move botB (Normal movement)
+        if(botAPath.isEmpty() || (botAX == playerX && botAY == playerY)){
+            botAPath = botA.calculateShortestPath(botAX, botAY, maze, new int[]{playerX, playerY});
         }
 
-        if(!botPath.isEmpty()){
-            int[] nextStep = botPath.remove(0);
-            int dx = nextStep[0] - botX;
-            int dy = nextStep[1] - botY;
-        
+        if(!botAPath.isEmpty()){
+            int teleDistance = Math.min(3, botAPath.size());
+            int[] nextStep = botAPath.remove(0);
+
+            int dx = nextStep[0] - botAX;
+            int dy = nextStep[1] - botAY;
+
             if(dx == -1) {
                 botADirection = "up";
             } 
@@ -215,11 +232,10 @@ public class Maze extends Game {
             else {
                 botADirection = "down"; 
             }
-        
-            botX = nextStep[0];
-            botY = nextStep[1];
-        
-            // Update bot A's animation frames
+
+            botAX = nextStep[0];
+            botAY = nextStep[1];
+
             botASprite++;
             if (botASprite > 8) {
                 botASpriteNum++;
@@ -228,49 +244,84 @@ public class Maze extends Game {
                 }
                 botASprite = 0;
             }
-        
+
+            // Teleport forward
+            for (int i = 0; i < teleDistance - 1; i++) { // Already moved one step above
+                if(!botAPath.isEmpty()) {
+                    int[] step = botAPath.remove(0);
+                    botAX = step[0];
+                    botAY = step[1];
+                }
+            }
+
             // Check if bot reaches player
-            if(botX == playerX && botY == playerY){
-                System.out.println("BotA caught the player!");
+            if(botAX == playerX && botAY == playerY){
+                System.out.println("Bot A caught the player!");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
         }
+    }
 
-        // Move botB (Normal movement)
-        if(bot2Path.isEmpty() || (bot2X == playerX && bot2Y == playerY)){
-            bot2Path = botA.calculateShortestPath(bot2X, bot2Y, maze, exit);
+    private boolean checkBotCollision() {
+        // Optional: Check if bots collide with each other
+        if(botAX == botDX && botAY == botDY){
+            return false;
+        }
+        return true;
+    }
+
+    private void moveBotD(){
+        if(botDPath.isEmpty() || (botDX == exit[0] && botDY == exit[1])){
+            botDPath = botD.calculateShortestPath(botDX, botDY, maze, exit);
         }
 
-        if(!bot2Path.isEmpty()){
-            int teleDistance = Math.min(3, botPath.size());
-            int[] nextStep = bot2Path.remove(0);
-            bot2X = nextStep[0];
-            bot2Y = nextStep[1];
+        if(!botDPath.isEmpty()){
+            int[] nextStep = botDPath.remove(0);
+            int dx = nextStep[0] - botDX;
+            int dy = nextStep[1] - botDY;
 
-            for (int i = 0; i < teleDistance; i++) {
-                botPath.remove(0);
+            if(dx == -1) {
+                botDDirection = "up";
+            }  
+            else if(dx == 1) {
+                botDDirection = "down";
+            } 
+            else if(dy == -1) {
+                botDDirection = "left";
+            } 
+            else if(dy == 1) {
+                botDDirection = "right";
+            } 
+            else {
+                botDDirection = "down"; 
+            }
+
+            botDX = nextStep[0];
+            botDY = nextStep[1];
+
+            botDSprite++;
+            if (botDSprite > 8) {
+                botDSpriteNum++;
+                if (botDSpriteNum > 3) {
+                    botDSpriteNum = 1;
+                }
+                botDSprite = 0;
             }
 
             // Check if bot reaches exit
-            if(bot2X == exit[0] && bot2Y == exit[1]){
-                System.out.println("BotB wins!");
+            if(botDX == exit[0] && botDY == exit[1]){
+                System.out.println("Bot D wins");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
 
             // Check if bot meets player
-            if(bot2X == playerX && bot2Y == playerY){
-                System.out.println("BotB caught the player!");
+            if(botDX == playerX && botDY == playerY){
+                System.out.println("Bot D caught the player");
                 gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
-        }
-
-        // Optional: Check if bots collide with each other
-        if(botX == bot2X && botY == bot2Y){
-            System.out.println("Bots have collided!");
-            // Ínert the function handle this later
         }
     }
 
@@ -281,26 +332,16 @@ public class Maze extends Game {
                 if (maze[i][j] == 1) {
                     graphics2D.setColor(Color.BLACK);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                } else if (i == exit[0] && j == exit[1]) {
+                } 
+                else if (i == exit[0] && j == exit[1]) {
                     graphics2D.setColor(Color.GREEN);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                } else {
+                } 
+                else {
                     graphics2D.setColor(Color.WHITE);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 }
             }
-        }
-
-        // Draw botD's path 
-        if (bot2Path != null && !bot2Path.isEmpty()) {
-            Graphics2D g2d = (Graphics2D) graphics2D.create();
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); 
-            g2d.setColor(Color.RED);
-
-            for (int[] step : bot2Path) {
-                g2d.fillRect(step[1] * tileSize, step[0] * tileSize, tileSize, tileSize);
-            }
-            g2d.dispose();
         }
     
         // Draw player with animation
@@ -309,36 +350,44 @@ public class Maze extends Game {
             case "up":
                 if (spriteNum == 1) {
                     image = up1;
-                } else if (spriteNum == 2) {
+                } 
+                else if (spriteNum == 2) {
                     image = up2;
-                } else if (spriteNum == 3) {
+                } 
+                else if (spriteNum == 3) {
                     image = up3;
                 }
                 break;
             case "down":
                 if (spriteNum == 1) {
                     image = down1;
-                } else if (spriteNum == 2) {
+                } 
+                else if (spriteNum == 2) {
                     image = down2;
-                } else if (spriteNum == 3) {
+                } 
+                else if (spriteNum == 3) {
                     image = down3;
                 }
                 break;
             case "left":
                 if (spriteNum == 1) {
                     image = left1;
-                } else if (spriteNum == 2) {
+                } 
+                else if (spriteNum == 2) {
                     image = left2;
-                } else if (spriteNum == 3) {
+                } 
+                else if (spriteNum == 3) {
                     image = left3;
                 }
                 break;
             case "right":
                 if (spriteNum == 1) {
                     image = right1;
-                } else if (spriteNum == 2) {
+                } 
+                else if (spriteNum == 2) {
                     image = right2;
-                } else if (spriteNum == 3) {
+                } 
+                else if (spriteNum == 3) {
                     image = right3;
                 }
                 break;
@@ -350,58 +399,40 @@ public class Maze extends Game {
         if (image != null) {
             graphics2D.drawImage(image, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
         } 
-        else {
-            System.out.println("Image is null for direction: " + direction + ", spriteNum: " + spriteNum);
-            graphics2D.setColor(Color.BLUE);
-            graphics2D.fillOval(playerY * tileSize + 10, playerX * tileSize + 10, tileSize - 20, tileSize - 20);
+
+        // Draw Bot A 
+        if (botAPath != null && !botAPath.isEmpty()) {
+            Graphics2D g2d = (Graphics2D) graphics2D.create();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f)); 
+            g2d.setColor(Color.RED);
+
+            for (int[] step : botAPath) {
+                g2d.fillRect(step[1] * tileSize, step[0] * tileSize, tileSize, tileSize);
+            }
+            g2d.dispose();
         }
 
-       // Draw botA 
-       BufferedImage botAImage = null;
+        BufferedImage botAImage = null;
         switch (botADirection) {
             case "up":
-                if (botASpriteNum == 1) {
-                    botAImage = up1_A;
-                } 
-                else if (botASpriteNum == 2) {
-                    botAImage = up2_A;
-                } 
-                else if (botASpriteNum == 3) {
-                    botAImage = up3_A;
-                }
+                if (botASpriteNum == 1) botAImage = up1_A;
+                else if (botASpriteNum == 2) botAImage = up2_A;
+                else if (botASpriteNum == 3) botAImage = up3_A;
                 break;
             case "down":
-                if (botASpriteNum == 1) {
-                    botAImage = down1_A;
-                } 
-                else if (botASpriteNum == 2) {
-                    botAImage = down2_A;
-                } 
-                else if (botASpriteNum == 3) {
-                    botAImage = down3_A;
-                }
+                if (botASpriteNum == 1) botAImage = down1_A;
+                else if (botASpriteNum == 2) botAImage = down2_A;
+                else if (botASpriteNum == 3) botAImage = down3_A;
                 break;
             case "left":
-                if (botASpriteNum == 1) {
-                    botAImage = left1_A;
-                } 
-                else if (botASpriteNum == 2) {
-                    botAImage = left2_A;
-                } 
-                else if (botASpriteNum == 3) {
-                    botAImage = left3_A;
-                }
+                if (botASpriteNum == 1) botAImage = left1_A;
+                else if (botASpriteNum == 2) botAImage = left2_A;
+                else if (botASpriteNum == 3) botAImage = left3_A;
                 break;
             case "right":
-                if (botASpriteNum == 1) {
-                    botAImage = right1_A;
-                } 
-                else if (botASpriteNum == 2) {
-                    botAImage = right2_A;
-                } 
-                else if (botASpriteNum == 3) {
-                    botAImage = right3_A;
-                }
+                if (botASpriteNum == 1) botAImage = right1_A;
+                else if (botASpriteNum == 2) botAImage = right2_A;
+                else if (botASpriteNum == 3) botAImage = right3_A;
                 break;
             default:
                 botAImage = down1_A;
@@ -409,17 +440,40 @@ public class Maze extends Game {
         }
 
         if (botAImage != null) {
-            graphics2D.drawImage(botAImage, botY * tileSize, botX * tileSize, tileSize, tileSize, null);
+            graphics2D.drawImage(botAImage, botAY * tileSize, botAX * tileSize, tileSize, tileSize, null);
         } 
-        else {
-            System.out.println("BotA Image is null for direction: " + botADirection + ", spriteNum: " + botASpriteNum);
-            graphics2D.setColor(Color.BLUE);
-            graphics2D.fillOval(botY * tileSize + 10, botX * tileSize + 10, tileSize - 20, tileSize - 20);
+
+        // Draw Bot D
+        BufferedImage botDImage = null;
+        switch (botDDirection) {
+            case "up":
+                if (botDSpriteNum == 1) botDImage = up1_D;
+                else if (botDSpriteNum == 2) botDImage = up2_D;
+                else if (botDSpriteNum == 3) botDImage = up3_D;
+                break;
+            case "down":
+                if (botDSpriteNum == 1) botDImage = down1_D;
+                else if (botDSpriteNum == 2) botDImage = down2_D;
+                else if (botDSpriteNum == 3) botDImage = down3_D;
+                break;
+            case "left":
+                if (botDSpriteNum == 1) botDImage = left1_D;
+                else if (botDSpriteNum == 2) botDImage = left2_D;
+                else if (botDSpriteNum == 3) botDImage = left3_D;
+                break;
+            case "right":
+                if (botDSpriteNum == 1) botDImage = right1_D;
+                else if (botDSpriteNum == 2) botDImage = right2_D;
+                else if (botDSpriteNum == 3) botDImage = right3_D;
+                break;
+            default:
+                botDImage = down1_D;
+                break;
         }
 
-       // Draw botB
-       graphics2D.setColor(Color.ORANGE); 
-       graphics2D.fillOval(bot2Y * tileSize + 10, bot2X * tileSize + 10, tileSize - 20, tileSize - 20);
+        if (botDImage != null) {
+            graphics2D.drawImage(botDImage, botDY * tileSize, botDX * tileSize, tileSize, tileSize, null);
+        } 
     }
     
 
@@ -467,6 +521,22 @@ public class Maze extends Game {
 
     }
 
+    public void getBaseBotDImage(){
+        // BOT D IMAGES:
+        down1_D = setupBotD("down_1");
+        down2_D = setupBotD("down_2");
+        down3_D = setupBotD("down_3");
+        left1_D = setupBotD("left_1");
+        left2_D = setupBotD("left_2");
+        left3_D = setupBotD("left_3");
+        right1_D = setupBotD("right_1");
+        right2_D = setupBotD("right_2");
+        right3_D = setupBotD("right_3");
+        up1_D = setupBotD("up_1");
+        up2_D = setupBotD("up_2");
+        up3_D = setupBotD("up_3");
+    }
+
     public BufferedImage setupPlayerWarrior(String imagePath) {
 
         UtilityTool uTool = new UtilityTool();
@@ -500,5 +570,23 @@ public class Maze extends Game {
         }
         return image;
     }
+
+    public BufferedImage setupBotD(String imagePath) {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        String filePath = "res/Entities/Merchant/" + imagePath + ".png";
+        File imageFile = new File(filePath);
+
+        try (FileInputStream readImage = new FileInputStream(imageFile)) {
+            image = ImageIO.read(readImage);
+            image = uTool.scaleImage(image,gamePanel.tileSize + 16, gamePanel.tileSize + 16);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
 
 }
