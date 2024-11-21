@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import java.util.ArrayList;
 import GameManage.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
@@ -55,6 +54,8 @@ public class Maze extends Game {
     private BufferedImage left1_D, left2_D, left3_D;
     private BufferedImage right1_D, right2_D, right3_D;
 
+    private BufferedImage t1, t2;
+
     // Animation variables
     private String direction = "down";
     private int spriteNum = 1;
@@ -85,6 +86,7 @@ public class Maze extends Game {
         getBasePlayerImage();
         getBaseBotAImage();
         getBaseBotDImage();
+        getBaseTileImage();
     }
 
     private void loadCurrentMaze() {
@@ -256,7 +258,7 @@ public class Maze extends Game {
             // Check if bot reaches player
             if(botAX == playerX && botAY == playerY){
                 System.out.println("Bot A caught the player!");
-                gamePanel.gameState = gamePanel.gameOverState;
+                gamePanel.gameState = gamePanel.gameOptionState;
                 return;
             }
         }
@@ -311,14 +313,14 @@ public class Maze extends Game {
             // Check if bot reaches exit
             if(botDX == exit[0] && botDY == exit[1]){
                 System.out.println("Bot D wins");
-                gamePanel.gameState = gamePanel.gameOverState;
+                gamePanel.gameState = gamePanel.gameOptionState;
                 return;
             }
 
             // Check if bot meets player
             if(botDX == playerX && botDY == playerY){
                 System.out.println("Bot D caught the player");
-                gamePanel.gameState = gamePanel.gameOverState;
+                gamePanel.gameState = gamePanel.gameOptionState;
                 return;
             }
         }
@@ -331,14 +333,16 @@ public class Maze extends Game {
                 if (maze[i][j] == 1) {
                     graphics2D.setColor(Color.BLACK);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                    //graphics2D.drawImage(t2, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
                 } 
-                else if (i == exit[0] && j == exit[1]) {
+                else if (i == currentMaze.exit[0] && j == currentMaze.exit[1]) {
                     graphics2D.setColor(Color.GREEN);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 } 
                 else {
                     graphics2D.setColor(Color.WHITE);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                    //graphics2D.drawImage(t1, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
                 }
             }
         }
@@ -479,15 +483,15 @@ public class Maze extends Game {
     public void end(){
     }
 
-    private boolean isValidMove(int x, int y){
+    private boolean isValidMove(int x, int y) {
         return x >= 0 && x < maze.length && y >= 0 && y < maze[0].length && maze[x][y] != 1;
     }
 
-    public BufferedImage getAnimationImages(){
+    public BufferedImage getAnimationImages() {
         return null;
     }
 
-    public void getBasePlayerImage(){
+    public void getBasePlayerImage() {
         // PLAYER WARRIOR IMAGES:
         down1 = setupPlayerWarrior("down_1");
         down2 = setupPlayerWarrior("down_2");
@@ -503,7 +507,12 @@ public class Maze extends Game {
         up3 = setupPlayerWarrior("up_3");
     }
 
-    public void getBaseBotAImage(){
+    public void getBaseTileImage() {
+        t1 = setupTile("ground");
+        t2 = setupTile("stone_1_1");
+    }
+
+    public void getBaseBotAImage() {
         // BOT A IMAGES:
         down1_A = setupBotA("down_1");
         down2_A = setupBotA("down_2");
@@ -587,5 +596,21 @@ public class Maze extends Game {
         return image;
     }
 
+    public BufferedImage setupTile(String imagePath) {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        String filePath = "res/Tile/" + imagePath + ".png";
+        File imageFile = new File(filePath);
+
+        try (FileInputStream readImage = new FileInputStream(imageFile)) {
+            image = ImageIO.read(readImage);
+            image = uTool.scaleImage(image,gamePanel.tileSize + 16, gamePanel.tileSize + 16);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
 
 }
