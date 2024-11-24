@@ -35,10 +35,17 @@ public class PlayManager {
     Mino nextMino;
     final int NEXTMINO_X;
     final int NEXTMINO_Y;
+
     // The Ghost Mino
     Mino ghostMino;
 
+    // The Hold Mino
+    Mino holdMino;
+    final int HOLDMINO_X;
+    final int HOLDMINO_Y;
+
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
+    public static Stack<Mino> HoldBlocks = new Stack();
 
     // Drop attribute
     public static int dropInterval = 60; // Minos drop every 60 frames
@@ -67,14 +74,17 @@ public class PlayManager {
         MINO_START_X = left_x + (WIDTH/2) - Block.SIZE;
         MINO_START_Y = top_y + Block.SIZE;
 
-        NEXTMINO_X = right_x + 175;
+        NEXTMINO_X = right_x + 185;
         NEXTMINO_Y = top_y + 500;
+
+        HOLDMINO_X = left_x - 205;
+        HOLDMINO_Y = top_y + 100;
 
         // Set the starting Mino
         currentMino = pickMino();
         nextMino = pickMino();
         ghostMino = new Mino();
-        ghostMino.create(new Color(192,192,192  ));
+        ghostMino.create(new Color(192,192,192));
 
         currentMino.setXY(MINO_START_X, MINO_START_Y);
         nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
@@ -126,6 +136,7 @@ public class PlayManager {
         else{
             ghostMino.duplicate(currentMino);
             currentMino.update();
+            holdMechanic();
         }
     }
     private void checkDelete(){
@@ -190,11 +201,35 @@ public class PlayManager {
                 y += Block.SIZE;
             }
         }
-
         // Add Score
         if(lineCount > 0){
             int singleLineScore = 10 * level;
             score += singleLineScore * lineCount;
+        }
+    }
+    public void holdMechanic(){
+        if(gamePanel.keyHandler.holdPressed){
+            HoldBlocks.push(currentMino);
+            holdMino = HoldBlocks.peek();
+            holdMino.setXY(HOLDMINO_X, HOLDMINO_Y);
+            currentMino = nextMino;
+            currentMino.setXY(MINO_START_X, MINO_START_Y);
+            nextMino = pickMino();
+            nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+            gamePanel.keyHandler.holdPressed = false;
+        }
+        if(gamePanel.keyHandler.releasePressed){
+            if(!HoldBlocks.empty()){
+                nextMino = currentMino;
+                nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+                currentMino = HoldBlocks.pop();
+                if(!HoldBlocks.empty()){
+                    holdMino = HoldBlocks.peek();
+                }
+                holdMino.setXY(HOLDMINO_X, HOLDMINO_Y);
+                currentMino.setXY(MINO_START_X, MINO_START_Y);
+            }
+            gamePanel.keyHandler.releasePressed = false;
         }
     }
     public void draw(Graphics2D graphics2D){
@@ -227,13 +262,18 @@ public class PlayManager {
         graphics2D.drawString("LINES: " + lines, x, y); y += 70;
         graphics2D.drawString("SCORE: " + score, x, y);
 
-        // Draw the currentMino
+        // Draw the currentMino and ghostMino
         if (currentMino != null){
             ghostMino.draw(graphics2D);
             currentMino.draw(graphics2D);
         }
         // Draw the nextMino
         nextMino.draw(graphics2D);
+
+        //Draw the holdMino
+        if(!HoldBlocks.empty()){
+            holdMino.draw(graphics2D);
+        }
 
         // Draw Static Blocks
         for(int i=0; i<staticBlocks.size(); i++){
@@ -255,5 +295,11 @@ public class PlayManager {
                 effectY.clear();
             }
         }
+
+        //Draw Hold Block Frame
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.setStroke(new BasicStroke(4f));
+        graphics2D.drawRect(left_x-300, top_y, 200, 200);
+        graphics2D.drawString("NEXT", left_x-300+60, top_y+60);
     }
 }

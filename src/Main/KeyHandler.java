@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
-    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed;
+    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, holdPressed, releasePressed;
 
     // Debug
     boolean showDebugText = false;
@@ -105,6 +105,12 @@ public class KeyHandler implements KeyListener {
             }
             if(code == KeyEvent.VK_SPACE){
                 spacePressed = true;
+            }
+            if(code == KeyEvent.VK_E){
+                holdPressed = true;
+            }
+            if(code == KeyEvent.VK_Q){
+                releasePressed = true;
             }
         // CHANGE STATE:
             // PRESS ESCAPE TOP PAUSE GAME AND SETTINGS:
@@ -288,6 +294,5 @@ public class KeyHandler implements KeyListener {
         {
             rightPressed = false;
         }
-        
     }
 }
