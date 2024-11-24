@@ -20,7 +20,8 @@ public class Maze extends Game {
     private MazeNode head;         
     private MazeNode currentMaze;   
     private int[][] maze;           
-    private int[] exit;            
+    private int[] exit;    
+    private int score = 0;        
 
     private int playerX, playerY;     
     private int tileSize = 60;      
@@ -63,8 +64,8 @@ public class Maze extends Game {
 
     private int botDMoveCounter = 0;
     private int botAMoveCounter = 0;
-    private int botMoveDelayD = 30;
-    private int botMoveDelayA = 50; 
+    private int botMoveDelayD = 60;
+    private int botMoveDelayA = 60; 
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -185,6 +186,7 @@ public class Maze extends Game {
                     gamePanel.gameState = gamePanel.gameOverState;
                     return;
                 }
+                score += 100;
             }
 
             // Move bot 
@@ -193,10 +195,12 @@ public class Maze extends Game {
                 botDMoveCounter = 0;
                 moveBotD();
             }
-            botAMoveCounter++;
-            if (botAMoveCounter >= botMoveDelayA) {
-                botAMoveCounter = 0;
-                moveBotA();
+            if(checkBotCollision()) {
+                botAMoveCounter++;
+                if (botAMoveCounter >= botMoveDelayA) {
+                    botAMoveCounter = 0;
+                    moveBotA();
+                }
             }
         } 
         else {
@@ -324,6 +328,7 @@ public class Maze extends Game {
                 return;
             }
         }
+
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -477,6 +482,13 @@ public class Maze extends Game {
         if (botDImage != null) {
             graphics2D.drawImage(botDImage, botDY * tileSize, botDX * tileSize, tileSize, tileSize, null);
         } 
+
+        // Draw score box
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.fillRect(10, 10, 150, 40); // Background 
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.setFont(new Font("Arial", Font.BOLD, 20));
+        graphics2D.drawString("Score: " + score, 20, 35);
     }
     
 
