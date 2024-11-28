@@ -6,12 +6,12 @@ public class MapFactory {
 
     public static MazeNode createMazeLinkedList() {
         Map m1 = new Map();
-        Map m2 = new Map();
-        Map m3 = new Map();
-        Map m4 = new Map();
-        MazeNode.mappingNode(m1.node, m2.node);
-        MazeNode.mappingNode(m2.node, m3.node);
-        MazeNode.mappingNode(m3.node, m4.node);
+        MazeNode currentNode = m1.node;
+        for (int i = 0; i < 7; i++) {
+            Map newMap = new Map();
+            MazeNode.mappingNode(currentNode, newMap.node); 
+            currentNode = newMap.node; 
+        }
         return m1.node;
     }
 }

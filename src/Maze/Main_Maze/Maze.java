@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -32,6 +34,9 @@ public class Maze extends Game {
     private String botDDirection = "down";
     private int botDSpriteNum = 1;
     private int botDSprite = 0;
+    private boolean botDStopped = false;
+    private int botDStopCounter = 0;
+    private int botDStopDuration = 180;
 
     // Bot A variables
     private int botAX, botAY;       
@@ -39,6 +44,9 @@ public class Maze extends Game {
     private String botADirection = "down";
     private int botASpriteNum = 1;
     private int botASprite = 0;
+    private boolean botAStopped = false;
+    private int botAStopCounter = 0;
+    private int botAStopDuration = 180;
 
     private BufferedImage up1, up2, up3;
     private BufferedImage down1, down2, down3;
@@ -56,6 +64,7 @@ public class Maze extends Game {
     private BufferedImage right1_D, right2_D, right3_D;
 
     private BufferedImage t1, t2;
+    private BufferedImage holeImage;
 
     // Animation variables
     private String direction = "down";
@@ -66,6 +75,10 @@ public class Maze extends Game {
     private int botAMoveCounter = 0;
     private int botMoveDelayD = 60;
     private int botMoveDelayA = 60; 
+
+    private List<int[]> holePositions = new ArrayList<>();
+    private int holeGenerationCounter = 0;
+    private int holeGenerationDelay = 300;
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -88,6 +101,7 @@ public class Maze extends Game {
         getBaseBotAImage();
         getBaseBotDImage();
         getBaseTileImage();
+        getHoleImage();
     }
 
     private void loadCurrentMaze() {
@@ -120,6 +134,7 @@ public class Maze extends Game {
     
         this.botDPath = botD.calculateShortestPath(botDX, botDY, maze, exit);
         this.botAPath = botA.calculateShortestPath(botAX, botAY, maze, exit);
+        holePositions.clear();
     }
 
     public void update(){
@@ -172,6 +187,16 @@ public class Maze extends Game {
                 }
                 spriteCounter = 0;
             }
+
+            // Check if player steps into a hole
+            for (int[] hole : holePositions) {
+                if (playerX == hole[0] && playerY == hole[1]) {
+                    if (botMoveDelayD > 20) botMoveDelayD -= 10;
+                    if (botMoveDelayA > 20) botMoveDelayA -= 10;
+                    holePositions.remove(hole);
+                    break;
+                }
+            }
     
             // Check player reache exit
             if(playerX == exit[0] && playerY == exit[1]){
@@ -182,34 +207,75 @@ public class Maze extends Game {
                 } 
                 else {
                     // Player wins the game
-                    System.out.println("Player wins");
                     gamePanel.gameState = gamePanel.gameOverState;
                     return;
                 }
                 score += 100;
             }
+            else {
+                // Reset animation if player cannot move
+                spriteNum = 1;
+            }
+
+            holeGenerationCounter++;
+            if (holeGenerationCounter >= holeGenerationDelay) {
+                holeGenerationCounter = 0;
+                generateRandomHole();
+            }
 
             // Move bot 
-            botDMoveCounter++;
-            if (botDMoveCounter >= botMoveDelayD) {
-                botDMoveCounter = 0;
-                moveBotD();
+            if (!botDStopped) {
+                botDMoveCounter++;
+                if (botDMoveCounter >= botMoveDelayD) {
+                    botDMoveCounter = 0;
+                    moveBotD();
+                }
+            } 
+            else {
+                botDStopCounter++;
+                if (botDStopCounter >= botDStopDuration) {
+                    botDStopCounter = 0;
+                    botDStopped = false;
+                }
             }
-            if(checkBotCollision()) {
+    
+            if (!botAStopped) {
                 botAMoveCounter++;
                 if (botAMoveCounter >= botMoveDelayA) {
                     botAMoveCounter = 0;
                     moveBotA();
                 }
+            } 
+            else {
+                botAStopCounter++;
+                if (botAStopCounter >= botAStopDuration) {
+                    botAStopCounter = 0;
+                    botAStopped = false;
+                }
             }
+        }     
+    }   
+
+    public void generateRandomHole() {
+        Random rand = new Random();
+        int x, y;
+        do {
+            x = rand.nextInt(maze.length);
+            y = rand.nextInt(maze[0].length);
         } 
-        else {
-            // Reset animation if player cannot move
-            spriteNum = 1;
-        }
-    }    
+        while (maze[x][y] != 0 || (x == playerX && y == playerY) || (x == exit[0] && y == exit[1]));
+        holePositions.add(new int[]{x, y});
+    }
 
     private void moveBotA() {
+        for (int[] hole : holePositions) {
+            if (botAX == hole[0] && botAY == hole[1]) {
+                botAStopped = true;
+                holePositions.remove(hole);
+                return;
+            }
+        }
+
         // Move botB (Normal movement)
         if(botAPath.isEmpty() || (botAX == playerX && botAY == playerY)){
             botAPath = botA.calculateShortestPath(botAX, botAY, maze, new int[]{playerX, playerY});
@@ -251,7 +317,7 @@ public class Maze extends Game {
             }
 
             // Teleport forward
-            for (int i = 0; i < teleDistance - 1; i++) { // Already moved one step above
+            for (int i = 0; i < teleDistance - 1; i++) { 
                 if(!botAPath.isEmpty()) {
                     int[] step = botAPath.remove(0);
                     botAX = step[0];
@@ -261,22 +327,22 @@ public class Maze extends Game {
 
             // Check if bot reaches player
             if(botAX == playerX && botAY == playerY){
-                System.out.println("Bot A caught the player!");
+                System.out.println("Bot A caught the player");
                 gamePanel.gameState = gamePanel.gameOptionState;
                 return;
             }
         }
     }
 
-    private boolean checkBotCollision() {
-        // Optional: Check if bots collide with each other
-        if(botAX == botDX && botAY == botDY){
-            return false;
-        }
-        return true;
-    }
-
     private void moveBotD(){
+        for (int[] hole : holePositions) {
+            if (botDX == hole[0] && botDY == hole[1]) {
+                botDStopped = true;
+                holePositions.remove(hole);
+                return;
+            }
+        }
+
         if(botDPath.isEmpty() || (botDX == exit[0] && botDY == exit[1])){
             botDPath = botD.calculateShortestPath(botDX, botDY, maze, exit);
         }
@@ -335,10 +401,12 @@ public class Maze extends Game {
         // Draw maze
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[i].length; j++) {
+                int x = j * tileSize;
+                int y = i * tileSize;
                 if (maze[i][j] == 1) {
-                    graphics2D.setColor(Color.BLACK);
-                    graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                    //graphics2D.drawImage(t2, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
+                    //graphics2D.setColor(Color.BLACK);
+                    //graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                    graphics2D.drawImage(t2, x, y, tileSize, tileSize, null);
                 } 
                 else if (i == currentMaze.exit[0] && j == currentMaze.exit[1]) {
                     graphics2D.setColor(Color.GREEN);
@@ -347,9 +415,14 @@ public class Maze extends Game {
                 else {
                     graphics2D.setColor(Color.WHITE);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                    //graphics2D.drawImage(t1, playerY * tileSize, playerX * tileSize, tileSize, tileSize, null);
+                    //graphics2D.drawImage(t1, x, y, tileSize, tileSize, null);
                 }
             }
+        }
+
+        // Draw holes
+        for (int[] hole : holePositions) {
+            graphics2D.drawImage(holeImage, hole[1] * tileSize, hole[0] * tileSize, tileSize, tileSize, null);
         }
     
         // Draw player with animation
@@ -484,9 +557,11 @@ public class Maze extends Game {
         } 
 
         // Draw score box
-        graphics2D.setColor(Color.BLACK);
-        graphics2D.fillRect(10, 10, 150, 40); // Background 
+        graphics2D.setColor(new Color(50, 50, 50)); // Dark gray background
+        graphics2D.fillRect(10, 10, 150, 40);
         graphics2D.setColor(Color.WHITE);
+        graphics2D.drawRect(10, 10, 150, 40); 
+        
         graphics2D.setFont(new Font("Arial", Font.BOLD, 20));
         graphics2D.drawString("Score: " + score, 20, 35);
     }
@@ -625,4 +700,7 @@ public class Maze extends Game {
         return image;
     }
 
+    public void getHoleImage() {
+        holeImage = setupTile("hole"); 
+    }
 }
