@@ -9,7 +9,7 @@ import Maze.Main_Maze.Maze;
 public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
-    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, holdPressed, releasePressed;
 
     // Debug
     boolean showDebugText = false;
@@ -139,6 +139,15 @@ public class KeyHandler implements KeyListener {
                 }
                 if(code == KeyEvent.VK_D){
                     rightPressed = true;
+                }
+                if(code == KeyEvent.VK_SPACE){
+                    spacePressed = true;
+                }
+                if(code == KeyEvent.VK_E){
+                    holdPressed = true;
+                }
+                if(code == KeyEvent.VK_Q){
+                    releasePressed = true;
                 }
             }
             // Button for Maze
