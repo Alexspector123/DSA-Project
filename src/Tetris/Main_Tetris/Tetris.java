@@ -41,6 +41,10 @@ public class Tetris extends Game {
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
     public static Stack<Mino> HoldBlocks = new Stack();
 
+    // Mino Bag
+    private ArrayList<Mino> minoBag = new ArrayList<>();
+    private Random random = new Random();
+
     // Drop attribute
     public static int dropInterval = 60; // Minos drop every 60 frames
 
@@ -74,6 +78,9 @@ public class Tetris extends Game {
         HOLDMINO_X = left_x - 205;
         HOLDMINO_Y = top_y + 100;
 
+        // Initialize the bag with shuffled Minos
+        refillAndShuffleBag();
+
         // Set the starting Mino
         currentMino = pickMino();
         nextMino = pickMino();
@@ -84,36 +91,31 @@ public class Tetris extends Game {
         nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
     }
 
+    private void refillAndShuffleBag() {
+
+        minoBag.clear();
+
+        minoBag.add(new Mino_L_Right());
+        minoBag.add(new Mino_L_Left());
+        minoBag.add(new Mino_Square());
+        minoBag.add(new Mino_Bar());
+        minoBag.add(new Mino_T());
+        minoBag.add(new Mino_Z_Right());
+        minoBag.add(new Mino_Z_Left());
+
+        // Fisher-Yates Shuffle
+        for (int i = minoBag.size() - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            Collections.swap(minoBag, i, j);
+        }
+    }
+
     private Mino pickMino() {
 
-        // Pick a random mino
-        Mino mino = null;
-        int i = new Random().nextInt(7);
-
-        switch (i) {
-            case 0:
-                mino = new Mino_L_Right();
-                break;
-            case 1:
-                mino = new Mino_L_Left();
-                break;
-            case 2:
-                mino = new Mino_Square();
-                break;
-            case 3:
-                mino = new Mino_Bar();
-                break;
-            case 4:
-                mino = new Mino_T();
-                break;
-            case 5:
-                mino = new Mino_Z_Right();
-                break;
-            case 6:
-                mino = new Mino_Z_Left();
-                break;
+        if (minoBag.isEmpty()) {
+            refillAndShuffleBag();
         }
-        return mino;
+        return minoBag.remove(0);
     }
 
     public void update() {
