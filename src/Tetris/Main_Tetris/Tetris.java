@@ -185,14 +185,12 @@ public class Tetris extends Game {
                             staticBlocks.remove(i);
                         }
                     }
-
                     lineCount++;
                     lines++;
                     // Drop Speed
                     // if the line score hits a certain number, increase the drop speed
                     // 1 is the fastest
                     if (lines % 10 == 0 && dropInterval > 1) {
-
                         level++;
                         if (dropInterval > 10) {
                             dropInterval -= 10;
@@ -200,7 +198,6 @@ public class Tetris extends Game {
                             dropInterval -= 1;
                         }
                     }
-
                     // a line has been deleted so need to slide down blocks that are above it
                     for (int i = 0; i < staticBlocks.size(); i++) {
                         if (staticBlocks.get(i).y < y) {
