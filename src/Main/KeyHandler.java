@@ -3,10 +3,13 @@ package Main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import Main_Tetris.Tetris;
+import Maze.Main_Maze.Maze;
+
 public class KeyHandler implements KeyListener {
 
     GamePanel gamePanel;
-    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, holdPressed, releasePressed;
 
     // Debug
     boolean showDebugText = false;
@@ -41,10 +44,6 @@ public class KeyHandler implements KeyListener {
             else if(gamePanel.gameState == gamePanel.pauseState){
                 pauseState(code);
             }
-        //OPTION STATE
-            else if(gamePanel.gameState == gamePanel.optionsState) {
-                optionsState(code);
-            }
     }
     // STATES
         // TITLE STATE
@@ -54,13 +53,13 @@ public class KeyHandler implements KeyListener {
                 gamePanel.ui.commandNum--;
                 gamePanel.playSE(12);
                 if(gamePanel.ui.commandNum < 0)
-                    gamePanel.ui.commandNum = 2;
+                    gamePanel.ui.commandNum = 1;
             }
             if(code == KeyEvent.VK_S)
             {
                 gamePanel.ui.commandNum++;
                 gamePanel.playSE(12);
-                if(gamePanel.ui.commandNum > 2)
+                if(gamePanel.ui.commandNum > 1)
                     gamePanel.ui.commandNum = 0;
             }
             if (code == KeyEvent.VK_ENTER){
@@ -71,20 +70,19 @@ public class KeyHandler implements KeyListener {
                         gamePanel.playMusic(0);
                         gamePanel.gameState = gamePanel.gameOptionState;
                     }
-                    // PRESS ENTER WITH SETTING BUTTON:
-                    if (gamePanel.ui.commandNum == 1) {
-                        gamePanel.tempGameState = gamePanel.titleState;
-                        gamePanel.gameState = gamePanel.optionsState;
-                    }
                     // PRESS ENTER WITH EXIT BUTTON:
-                    if (gamePanel.ui.commandNum == 2) {
+                    if (gamePanel.ui.commandNum == 1) {
                         System.exit(0);
                     }
             }
         }
         // CHOOSE GAME STATE
         public void chooseGameState(int code){
-            
+
+            if(code == KeyEvent.VK_ESCAPE){
+                gamePanel.gameState = gamePanel.titleState;
+                gamePanel.ui.commandNum = 0;
+            }
             if(code == KeyEvent.VK_W)
             {
                 gamePanel.ui.commandNum--;
@@ -122,23 +120,48 @@ public class KeyHandler implements KeyListener {
         }
         // PLAY STATE
         public void playState(int code){
-            // W-A-S-D MOVEMENT:
-            if(code == KeyEvent.VK_W)
-            {
-                upPressed = true;
+            // Button for Tetris
+            if(gamePanel.playManager.getCurrentGame().getClass() == Tetris.class){
+                // W-A-S-D MOVEMENT:
+                if(code == KeyEvent.VK_W){
+                    upPressed = true;
+                }
+                if(code == KeyEvent.VK_A){
+                    leftPressed = true;
+                }
+                if(code == KeyEvent.VK_S){
+                    downPressed = true;
+                }
+                if(code == KeyEvent.VK_D){
+                    rightPressed = true;
+                }
+                if(code == KeyEvent.VK_SPACE){
+                    spacePressed = true;
+                }
+                if(code == KeyEvent.VK_E){
+                    holdPressed = true;
+                }
+                if(code == KeyEvent.VK_Q){
+                    releasePressed = true;
+                }
             }
-            if(code == KeyEvent.VK_A)
-            {
-                leftPressed = true;
+            // Button for Maze
+            if(gamePanel.playManager.getCurrentGame().getClass() == Maze.class){
+                // W-A-S-D MOVEMENT:
+                if(code == KeyEvent.VK_W){
+                    upPressed = true;
+                }
+                if(code == KeyEvent.VK_A){
+                    leftPressed = true;
+                }
+                if(code == KeyEvent.VK_S){
+                    downPressed = true;
+                }
+                if(code == KeyEvent.VK_D){
+                    rightPressed = true;
+                }
             }
-            if(code == KeyEvent.VK_S)
-            {
-                downPressed = true;
-            }
-            if(code == KeyEvent.VK_D)
-            {
-                rightPressed = true;
-            }
+
             if(code == KeyEvent.VK_ENTER){
                 enterPressed = true;
             } else if (code != KeyEvent.VK_ENTER){
@@ -177,13 +200,13 @@ public class KeyHandler implements KeyListener {
                     gamePanel.ui.pauseCommandNum--;
                     gamePanel.playSE(12);
                     if(gamePanel.ui.pauseCommandNum < 0)
-                        gamePanel.ui.pauseCommandNum = 2;
+                        gamePanel.ui.pauseCommandNum = 1;
                 }
                 if(code == KeyEvent.VK_S)
                 {
                     gamePanel.ui.pauseCommandNum++;
                     gamePanel.playSE(12);
-                    if(gamePanel.ui.pauseCommandNum > 2)
+                    if(gamePanel.ui.pauseCommandNum > 1)
                         gamePanel.ui.pauseCommandNum = 0;
                 }
                 if (code == KeyEvent.VK_ENTER){
@@ -191,93 +214,15 @@ public class KeyHandler implements KeyListener {
                     if(gamePanel.ui.pauseCommandNum == 0){
                         gamePanel.gameState = gamePanel.playState;
                     }
-                    // PRESS ENTER WITH SETTING BUTTON:
-                    if(gamePanel.ui.pauseCommandNum == 1){
-                        gamePanel.tempGameState = gamePanel.pauseState;
-                        gamePanel.gameState = gamePanel.optionsState;
-                    }
                     // PRESS ENTER WITH EXIT BUTTON:
-                    if(gamePanel.ui.pauseCommandNum == 2){
-                        System.exit(0);
+                    if(gamePanel.ui.pauseCommandNum == 1){
+                        gamePanel.gameState = gamePanel.gameOptionState;
+                        gamePanel.playManager.setUp(gamePanel);
                     }
                 }
                 enterPressed = false;
         }
-        // DIALOGUE STATE
-        public void dialogueState(int code) {
-            if(code == KeyEvent.VK_ENTER){
-                gamePanel.gameState = gamePanel.playState;
-                
-            }
-        }
-        
-        // OPTION STATE:
-        public void optionsState(int code) {
-            if(code == KeyEvent.VK_ESCAPE) {
-                gamePanel.gameState = gamePanel.playState;
-            }
-            if(code == KeyEvent.VK_ENTER) {
-                enterPressed = true;
-            }
-            if(code == KeyEvent.VK_W){
-                gamePanel.ui.settingCommandNum--;
-                gamePanel.playSE(12);
-                if (gamePanel.ui.settingCommandNum < 0 ){
-                    gamePanel.ui.settingCommandNum = 4;
-                }
-            }
 
-            if(code == KeyEvent.VK_S){
-                gamePanel.ui.settingCommandNum++;
-                gamePanel.playSE(12);
-                if ( gamePanel.ui.settingCommandNum > 4 ) {
-                    gamePanel.ui.settingCommandNum = 0;
-                }
-            }
-            // PRESS ENTER:
-                if (code == KeyEvent.VK_ENTER){
-                    // PRESS ENTER WITH EXIT BUTTON:
-                        if(gamePanel.ui.settingCommandNum == 3){
-                            System.exit(0);
-                        }
-                    // PRESS ENTER WITH BACK BUTTON:
-                        if(gamePanel.ui.settingCommandNum == 4){
-                            gamePanel.gameState = gamePanel.tempGameState;
-                        }
-                }
-                // MUSIC BUTTON & VOLUME BAR:
-                    if ( code == KeyEvent.VK_A ) {
-                        if (gamePanel.ui.settingCommandNum == 0) {
-                            if (gamePanel.music.volumeScale > 0) {
-                                gamePanel.music.volumeScale--;
-                                gamePanel.playSE(12);
-                                gamePanel.music.checkVolume();
-                            }
-                        }
-                        if (gamePanel.ui.settingCommandNum == 1) {
-                            if (gamePanel.se.volumeScale > 0) {
-                                gamePanel.se.volumeScale--;
-                                gamePanel.playSE(12);
-                            }
-                        }
-                    }
-                    if ( code == KeyEvent.VK_D ) {
-                        if (gamePanel.ui.settingCommandNum == 0) {
-                            if (gamePanel.music.volumeScale < 11) {
-                                gamePanel.music.volumeScale++;
-                                gamePanel.playSE(12);
-                                gamePanel.music.checkVolume();
-                            }
-                        }
-                        if (gamePanel.ui.settingCommandNum == 1) {
-                            if (gamePanel.se.volumeScale < 11) {
-                                gamePanel.se.volumeScale++;
-                                gamePanel.playSE(12);
-                            }
-                        }
-                    }
-                    enterPressed = false;
-        }
         public void gameOverState(int code){
         if(code == KeyEvent.VK_W){
             gamePanel.ui.commandNum--;
@@ -305,24 +250,21 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-        @Override
-        public void keyReleased(KeyEvent e) {
+
+    @Override
+    public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if(code == KeyEvent.VK_W)
-        {
+        if (code == KeyEvent.VK_W) {
             upPressed = false;
         }
-        if(code == KeyEvent.VK_A)
-        {
-            leftPressed = false;
-        }
-        if(code == KeyEvent.VK_S)
-        {
+        if (code == KeyEvent.VK_S) {
             downPressed = false;
         }
-        if(code == KeyEvent.VK_D)
-        {
+        if (code == KeyEvent.VK_A) {
+            leftPressed = false;
+        }
+        if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
     }

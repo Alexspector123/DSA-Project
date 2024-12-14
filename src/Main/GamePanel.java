@@ -2,7 +2,6 @@ package Main;
 
 import javax.swing.JPanel;
 
-import GameManage.Game;
 import GameManage.GameFactory;
 
 import java.awt.*;
@@ -46,9 +45,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
-    public final int optionsState = 3;
+    public final int gameOptionState = 3;
     public final int gameOverState = 4;
-    public final int gameOptionState = 5;
     public GameManager playManager;
 
 
@@ -102,7 +100,6 @@ public class GamePanel extends JPanel implements Runnable{
             double nextDrawTime = System.nanoTime() + drawInterval;
 
             while ( gameThread != null ) {
-
                 // 1. UPDATE: Update information such as character positions,...
                     update();
                 // 2. DRAW: redraw the screen with the updated information
@@ -130,12 +127,10 @@ public class GamePanel extends JPanel implements Runnable{
         public void update() {
             
             if (gameState == playState) {
-                playManager.getCurrentGame().update();
-
-/*---------------------------------------------------------------*/
-
+                if(playManager.getCurrentGame() != null){
+                    playManager.getCurrentGame().update();
+                }
             }
-            //System.out.println(playManager.getCurrentGame());
         }
         public void paintComponent(Graphics graphics){
 
@@ -161,6 +156,9 @@ public class GamePanel extends JPanel implements Runnable{
                     else if(gameState == playState) {
                         playManager.getCurrentGame().draw(graphics2D);
                         // UI
+                        ui.draw(graphics2D);
+                    }
+                    else{
                         ui.draw(graphics2D);
                     }
 
