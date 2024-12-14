@@ -101,7 +101,7 @@ public class UI {
         g2.setFont(maruMonica);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setColor(Color.WHITE);
-        
+
         // CHECK CURRENT GAME STATE:
         // TITLE SCREEN STATE:
         if (gamePanel.gameState == gamePanel.titleState) {
@@ -186,8 +186,8 @@ public class UI {
         quitButton1 = setup("QuitButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         quitButton2 = setup("QuitButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         // CHOOSING SCREEN
-        gameFrame1 = setup("Frame_1" , gamePanel.tileSize * 6, gamePanel.tileSize*6);
-        gameFrame2 = setup("Frame_3" , gamePanel.tileSize * 6, gamePanel.tileSize*6);
+        gameFrame1 = setup("Frame_11", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
+        gameFrame2 = setup("Frame_21", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
     }
 
     public void drawPauseScreen() {
@@ -244,9 +244,27 @@ public class UI {
      * }
      */
     public void drawGameOverScreen() {
-        g2.setColor(Color.yellow);
-        g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString("GameOver", Tetris.left_x + 130, Tetris.top_y + 320);
+        int x = 0;
+        int y = 0;
+        // DRAW MENU TITLE SCREEN:
+        g2.drawImage(gameOverScreen, x, y, null);
+        // DRAW BUTTON:
+        x = gamePanel.tileSize * 16;
+        y = gamePanel.tileSize * 7;
+        // RETRY BUTTON:
+        if (commandNum == 0) {
+            g2.drawImage(retryButton1, x, y, null);
+        } else {
+            g2.drawImage(retryButton2, x, y, null);
+        }
+
+        // QUIT BUTTON:
+        y += 82;
+        if (commandNum == 1) {
+            g2.drawImage(quitButton1, x, y, null);
+        } else {
+            g2.drawImage(quitButton2, x, y, null);
+        }
     }
 
     public void drawSubWindow(int x, int y, int width, int height) {

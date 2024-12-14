@@ -11,6 +11,9 @@ public class KeyHandler implements KeyListener {
     GamePanel gamePanel;
     public static boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, holdPressed, releasePressed;
 
+    // Game Name
+    String gameName;
+
     // Debug
     boolean showDebugText = false;
 
@@ -43,6 +46,9 @@ public class KeyHandler implements KeyListener {
         // PAUSE STATE:
             else if(gamePanel.gameState == gamePanel.pauseState){
                 pauseState(code);
+            }
+            else if(gamePanel.gameState == gamePanel.gameOverState){
+                gameOverState(code);
             }
     }
     // STATES
@@ -96,12 +102,14 @@ public class KeyHandler implements KeyListener {
                         gamePanel.tempGameState = gamePanel.gameOptionState;
                         gamePanel.gameState = gamePanel.playState;
                         gamePanel.playManager.loadGame("Tetris");
+                        gameName = "Tetris";
                     }
                     // PRESS ENTER WITH PLAY MAZE GAME BUTTON:
                     if (gamePanel.ui.commandNum == 1) {
                         gamePanel.tempGameState = gamePanel.gameOptionState;
                         gamePanel.gameState = gamePanel.playState;
                         gamePanel.playManager.loadGame("Maze");
+                        gameName = "Maze";
                     }
                     // PRESS ENTER WITH RETURN BUTTON:
                     if (gamePanel.ui.commandNum == 2) {
@@ -205,7 +213,7 @@ public class KeyHandler implements KeyListener {
                     // PRESS ENTER WITH EXIT BUTTON:
                     if(gamePanel.ui.pauseCommandNum == 1){
                         gamePanel.gameState = gamePanel.gameOptionState;
-                        gamePanel.retry();
+                        gamePanel.reset();
                     }
                 }
                 enterPressed = false;
@@ -225,14 +233,16 @@ public class KeyHandler implements KeyListener {
             }
         }
         if(code == KeyEvent.VK_ENTER){
-            if(gamePanel.ui.commandNum == 0){
-                gamePanel.gameState = gamePanel.playState;
-                gamePanel.retry();
-            }
-            else if(gamePanel.ui.commandNum == 1){
-                gamePanel.gameState = gamePanel.titleState;
-                gamePanel.retry();
-            }
+                    // PRESS ENTER WITH PLAY BUTTON:
+                    if(gamePanel.ui.pauseCommandNum == 0){
+                        gamePanel.gameState = gamePanel.playState;
+                        gamePanel.retry();
+                    }
+                    // PRESS ENTER WITH EXIT BUTTON:
+                    if(gamePanel.ui.pauseCommandNum == 1){
+                        gamePanel.gameState = gamePanel.gameOptionState;
+                        gamePanel.reset();
+                    }
         }
     }
 

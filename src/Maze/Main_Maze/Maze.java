@@ -22,8 +22,7 @@ public class Maze extends Game {
     private MazeNode head;         
     private MazeNode currentMaze;   
     private int[][] maze;           
-    private int[] exit;    
-    private int score = 0;        
+    private int[] exit;      
 
     private int playerX, playerY;     
     private int tileSize = 60;      
@@ -90,6 +89,7 @@ public class Maze extends Game {
         this.keyHandler = gamePanel.keyHandler;
         this.botD = Bot_D.getInstance();
         this.botA = Bot_A.getInstance();
+        setScore(0);
 
         // Initialize maze linked list using MapFactory
         head = MapFactory.createMazeLinkedList();
@@ -210,7 +210,7 @@ public class Maze extends Game {
                     gamePanel.gameState = gamePanel.gameOverState;
                     return;
                 }
-                score += 100;
+                setScore(getScore() + 100);
             }
             else {
                 // Reset animation if player cannot move
@@ -563,7 +563,7 @@ public class Maze extends Game {
         graphics2D.drawRect(10, 10, 150, 40); 
         
         graphics2D.setFont(new Font("Arial", Font.BOLD, 20));
-        graphics2D.drawString("Score: " + score, 20, 35);
+        graphics2D.drawString("Score: " + getScore(), 20, 35);
     }
     
 

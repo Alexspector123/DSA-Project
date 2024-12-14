@@ -70,10 +70,15 @@ public class GamePanel extends JPanel implements Runnable{
 
 
         }
-        public void retry(){
+        public void reset(){
         //    player.restoreLife();
             playManager.setUp(this);
         }
+        public void retry(){
+            //    player.restoreLife();
+                playManager.setUp(this);
+                playManager.loadGame(keyHandler.gameName);
+            }
         public void setFullScreen() {
 
             //GET LOCAL SCREEN DEVICE

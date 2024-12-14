@@ -14,32 +14,32 @@ import Mino.*;
 public class Tetris extends Game {
 
     // Main Play Area
-    final int WIDTH = 360;
-    final int HEIGHT = 600;
+    private final int WIDTH = 360;
+    private final int HEIGHT = 600;
     public static int left_x;
     public static int right_x;
     public static int top_y;
     public static int bottom_y;
 
     // Mino
-    Mino currentMino;
-    final int MINO_START_X;
-    final int MINO_START_Y;
+    private Mino currentMino;
+    private final int MINO_START_X;
+    private final int MINO_START_Y;
     // The Next Mino
-    Mino nextMino;
-    final int NEXTMINO_X;
-    final int NEXTMINO_Y;
+    private Mino nextMino;
+    private final int NEXTMINO_X;
+    private final int NEXTMINO_Y;
 
     // The Ghost Mino
-    Mino ghostMino;
+    private Mino ghostMino;
 
     // The Hold Mino
-    Mino holdMino;
-    final int HOLDMINO_X;
-    final int HOLDMINO_Y;
+    private Mino holdMino;
+    private final int HOLDMINO_X;
+    private final int HOLDMINO_Y;
 
     public static ArrayList<Block> staticBlocks;
-    public static Stack<Mino> HoldBlocks;
+    private static Stack<Mino> HoldBlocks;
 
     // Mino Bag
     private ArrayList<Mino> minoBag;
@@ -49,14 +49,13 @@ public class Tetris extends Game {
     public static int dropInterval = 60; // Minos drop every 60 frames
 
     // Effect
-    boolean effectCounterOn;
-    int effectCounter;
-    ArrayList<Integer> effectY = new ArrayList<>();
+    private boolean effectCounterOn;
+    private int effectCounter;
+    private ArrayList<Integer> effectY = new ArrayList<>();
 
     // Score
-    int level = 1;
-    int lines;
-    int score;
+    private int level = 1;
+    private int lines;
 
     GamePanel gamePanel;
 
@@ -81,6 +80,8 @@ public class Tetris extends Game {
         staticBlocks = new ArrayList<>();
         HoldBlocks = new Stack();
         minoBag = new ArrayList<>();
+
+        setScore(0);
 
         // Initialize the bag with shuffled Minos
         refillAndShuffleBag();
@@ -218,7 +219,7 @@ public class Tetris extends Game {
         // Add Score
         if (lineCount > 0) {
             int singleLineScore = 10 * level;
-            score += singleLineScore * lineCount;
+            setScore(getScore() + singleLineScore * lineCount);
         }
     }
 
@@ -278,7 +279,7 @@ public class Tetris extends Game {
         y += 70;
         graphics2D.drawString("LINES: " + lines, x, y);
         y += 70;
-        graphics2D.drawString("SCORE: " + score, x, y);
+        graphics2D.drawString("SCORE: " + getScore(), x, y);
 
         // Draw the currentMino and ghostMino
         if (currentMino != null) {
