@@ -409,11 +409,11 @@ public class Maze extends Game {
                     graphics2D.drawImage(t2, x, y, tileSize, tileSize, null);
                 } 
                 else if (i == currentMaze.exit[0] && j == currentMaze.exit[1]) {
-                    graphics2D.setColor(Color.BLACK);
+                    graphics2D.setColor(Color.WHITE);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                 } 
                 else {
-                    graphics2D.setColor(Color.WHITE);
+                    graphics2D.setColor(Color.BLACK);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                     //graphics2D.drawImage(t1, x, y, tileSize, tileSize, null);
                 }
@@ -555,15 +555,7 @@ public class Maze extends Game {
         if (botDImage != null) {
             graphics2D.drawImage(botDImage, botDY * tileSize, botDX * tileSize, tileSize, tileSize, null);
         } 
-
-        // Draw score box
-        graphics2D.setColor(Color.black); // Dark gray background
-        graphics2D.fillRect(10, 10, 150, 40);
-        graphics2D.setColor(Color.WHITE);
-        graphics2D.drawRect(10, 10, 150, 40); 
         
-        graphics2D.setFont(new Font("Arial", Font.BOLD, 20));
-        graphics2D.drawString("Score: " + getScore(), 20, 35);
     }
     
 

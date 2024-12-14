@@ -250,11 +250,11 @@ public class UI {
         int y = 0;
         // DRAW MENU TITLE SCREEN:
         g2.drawImage(gameOverScreen, x, y, null);
-        x = gamePanel.tileSize * 16;
-        y = gamePanel.tileSize * 5;
+        x = gamePanel.tileSize * 10;
+        y = gamePanel.tileSize * 4;
 
         g2.setFont(maruMonica);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));
 
         g2.drawString("Score: " + gamePanel.playManager.getCurrentGame().getScore(), x, y);
         // DRAW BUTTON:
