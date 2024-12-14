@@ -43,29 +43,27 @@ public class GameManager extends Game{
         int x = 0;
         int y = 0;
         // DRAW MENU TITLE SCREEN:
-        gamePanel.ui.g2.drawImage(gamePanel.ui.titleScreen , x , y , null );
+        gamePanel.ui.g2.drawImage(gamePanel.ui.pauseScreen , x , y , null );
         // DRAW BUTTON:
-        x += gamePanel.tileSize * 16;
+        x += gamePanel.tileSize * 7;
         y += gamePanel.tileSize * 5;
         // TETRIS BUTTON:
         if (gamePanel.ui.commandNum == 0 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.playButton1 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame2 , x , y , null );
         } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.playButton2 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame1 , x , y , null );
         }
         // MAZE BUTTON:
-        y += 82;
         if (gamePanel.ui.commandNum == 1 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.playButton1 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame2 , 2*x, y , null );
         } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.playButton2 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame1 , 2*x, y , null );
         }
-        // RETURM BUTTON:
-        y += 82;
+        // RETURN BUTTON:
         if (gamePanel.ui.commandNum == 2 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton1 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton1 , x , (int)(gamePanel.tileSize * 3.5) , null );
         } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton2 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton2 , x , (int)(gamePanel.tileSize * 3.5) , null );
         }
     }
 }
