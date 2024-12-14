@@ -168,40 +168,10 @@ public class UI {
         pauseScreen = setup("PauseScreen", gamePanel.screenWidth, gamePanel.screenHeight);
         resumeButton1 = setup("ResumeButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         resumeButton2 = setup("ResumeButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
-        musicButton1 = setup("MusicButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
-        musicButton2 = setup("MusicButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
-        sfxButton1 = setup("SFXButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
-        sfxButton2 = setup("SFXButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         controlButton1 = setup("ControlButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         controlButton2 = setup("ControlButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         backButton1 = setup("BackButton_1", (gamePanel.tileSize * 2) + 16, gamePanel.tileSize - 6);
         backButton2 = setup("BackButton_2", (gamePanel.tileSize * 2) + 16, gamePanel.tileSize - 6);
-
-        bar1_1 = setup("Bar1_1", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_2 = setup("Bar1_2", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_3 = setup("Bar1_3", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_4 = setup("Bar1_4", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_5 = setup("Bar1_5", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_6 = setup("Bar1_6", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_7 = setup("Bar1_7", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_8 = setup("Bar1_8", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_9 = setup("Bar1_9", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_10 = setup("Bar1_10", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_11 = setup("Bar1_11", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar1_12 = setup("Bar1_12", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-
-        bar2_1 = setup("Bar2_1", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_2 = setup("Bar2_2", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_3 = setup("Bar2_3", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_4 = setup("Bar2_4", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_5 = setup("Bar2_5", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_6 = setup("Bar2_6", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_7 = setup("Bar2_7", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_8 = setup("Bar2_8", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_9 = setup("Bar2_9", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_10 = setup("Bar2_10", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_11 = setup("Bar2_11", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
-        bar2_12 = setup("Bar2_12", (gamePanel.tileSize * 5) + 8, gamePanel.tileSize + 25);
 
         // TITLE SCREEN:
         titleScreen = setup("TitleScreen", gamePanel.screenWidth, gamePanel.screenHeight);

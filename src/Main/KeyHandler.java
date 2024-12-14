@@ -48,7 +48,6 @@ public class KeyHandler implements KeyListener {
     // STATES
         // TITLE STATE
         public void titleState(int code){
-            gamePanel.ui.commandNum = 0;
             if(code == KeyEvent.VK_W)
             {
                 gamePanel.ui.commandNum--;
@@ -178,7 +177,6 @@ public class KeyHandler implements KeyListener {
 
         // PAUSE STATE
         public void pauseState(int code){
-            gamePanel.ui.commandNum = 0;
             if(code == KeyEvent.VK_ESCAPE)
             {
                 gamePanel.gameState = gamePanel.playState;
@@ -214,7 +212,6 @@ public class KeyHandler implements KeyListener {
         }
 
         public void gameOverState(int code){
-            gamePanel.ui.commandNum = 0;
             if(code == KeyEvent.VK_W){
                 gamePanel.ui.commandNum--;
             if(gamePanel.ui.commandNum < 0){
