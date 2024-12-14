@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Represents a single maze map.
- */
 public class Map {
     int[][] maze;
     int[] start;
@@ -16,13 +13,8 @@ public class Map {
     int[] botStartA;
     int[] exit;
     MazeNode node;
-
     private static final int WIDTH = 13;
-    private static final int HEIGHT = 13; 
-
-    /**
-     * Constructs a Map instance by generating a maze and ensuring path connectivity.
-     */
+    private static final int HEIGHT = 13;
     public Map() {
         do {
             generateMazeRandomly();
@@ -36,36 +28,15 @@ public class Map {
         this.botStartA = findRandomPathPosition();
         this.node = createNewNode(maze, start, botStartD, botStartA, exit);
     }
-
-    /**
-     * Creates a new MazeNode.
-     *
-     * @param maze The maze grid.
-     * @param start The start coordinates.
-     * @param botStartD Bot D's start coordinates.
-     * @param botStartA Bot A's start coordinates.
-     * @param exit The exit coordinates.
-     * @return A new MazeNode instance.
-     */
     public static MazeNode createNewNode(int[][] maze, int[] start, int[] botStartD, int[] botStartA, int[] exit) {
         return new MazeNode(maze, start, botStartD, botStartA, exit);
     }
-
-    /**
-     * Generates a maze using a randomly selected MazeGenerator from the factory.
-     */
     private void generateMazeRandomly() {
         // Use the MazeGeneratorFactory to obtain a MazeGenerator
         MazeGenerator selectedGenerator = MazeGeneratorFactory.getRandomMazeGenerator();
         this.maze = selectedGenerator.generateMaze(WIDTH, HEIGHT);
         reduceWalls(10); 
     }
-
-    /**
-     * Finds a random position within the maze paths, excluding start and exit.
-     *
-     * @return An array containing x and y coordinates.
-     */
     public int[] findRandomPathPosition() {
         List<int[]> pathCells = new ArrayList<>();
         for (int y = 1; y < maze.length - 1; y++) {
@@ -78,17 +49,10 @@ public class Map {
         Random rand = new Random();
         return pathCells.get(rand.nextInt(pathCells.size()));
     }
-
-    /**
-     * Reduces the number of walls in the maze by a given percentage.
-     *
-     * @param percentage The percentage of walls to remove.
-     */
     private void reduceWalls(int percentage) {
         Random rand = new Random();
         int width = maze[0].length;
         int height = maze.length;
-    
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 if (maze[y][x] == 1 && rand.nextInt(100) < percentage) {
@@ -97,21 +61,13 @@ public class Map {
             }
         }
     }
-
-    /**
-     * Checks if a valid path exists from the start to the exit using BFS.
-     *
-     * @return True if a path exists, false otherwise.
-     */
     private boolean isPathExists() {
         int width = maze[0].length;
         int height = maze.length;
         boolean[][] visited = new boolean[height][width];
         List<int[]> queue = new ArrayList<>();
-    
         queue.add(start);
         visited[start[1]][start[0]] = true;
-    
         while (!queue.isEmpty()) {
             int[] current = queue.remove(0);
             int x = current[0];
@@ -120,7 +76,6 @@ public class Map {
             if (x == exit[0] && y == exit[1]) {
                 return true;
             }
-    
             // Explore neighbors
             int[][] directions = {
                 {x - 1, y},
@@ -128,7 +83,6 @@ public class Map {
                 {x, y - 1},
                 {x, y + 1}
             };
-    
             for (int[] dir : directions) {
                 int nx = dir[0];
                 int ny = dir[1];
@@ -140,7 +94,6 @@ public class Map {
                 }
             }
         }
-    
         return false;
     }
 }

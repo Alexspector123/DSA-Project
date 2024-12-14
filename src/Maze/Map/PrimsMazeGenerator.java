@@ -66,7 +66,6 @@ public class PrimsMazeGenerator implements MazeGenerator {
             }
         }
     }
-
     private List<int[]> getVisitedNeighbors(int x, int y, int[][] maze) {
         List<int[]> neighbors = new ArrayList<>();
         int[][] directions = {
