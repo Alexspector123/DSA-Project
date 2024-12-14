@@ -55,7 +55,7 @@ public class UI {
     // GAME OVER SCREEN
     BufferedImage gameOverScreen, retryButton1, retryButton2, quitButton1, quitButton2;
     // CHOOSING GAME SCREEN
-    BufferedImage gameFrame1, gameFrame2;
+    BufferedImage gameFrameTetris1, gameFrameTetris2, gameFrameMaze1, gameFrameMaze2;
     // ANIMATION FOR BUTTON:
     // TITLE SCREEN BUTTONS:
     public int commandNum = 0;
@@ -186,8 +186,10 @@ public class UI {
         quitButton1 = setup("QuitButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         quitButton2 = setup("QuitButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         // CHOOSING SCREEN
-        gameFrame1 = setup("Frame_11", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
-        gameFrame2 = setup("Frame_21", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
+        gameFrameTetris1 = setup("Frame_11", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
+        gameFrameTetris2 = setup("Frame_21", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
+        gameFrameMaze1 = setup("Frame_12", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
+        gameFrameMaze2 = setup("Frame_22", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
     }
 
     public void drawPauseScreen() {
@@ -248,9 +250,15 @@ public class UI {
         int y = 0;
         // DRAW MENU TITLE SCREEN:
         g2.drawImage(gameOverScreen, x, y, null);
-        // DRAW BUTTON:
         x = gamePanel.tileSize * 16;
-        y = gamePanel.tileSize * 7;
+        y = gamePanel.tileSize * 5;
+
+        g2.setFont(maruMonica);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+
+        g2.drawString("Score: " + gamePanel.playManager.getCurrentGame().getScore(), x, y);
+        // DRAW BUTTON:
+        y += 100;
         // RETRY BUTTON:
         if (commandNum == 0) {
             g2.drawImage(retryButton1, x, y, null);

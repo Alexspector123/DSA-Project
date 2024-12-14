@@ -328,7 +328,7 @@ public class Maze extends Game {
             // Check if bot reaches player
             if(botAX == playerX && botAY == playerY){
                 System.out.println("Bot A caught the player");
-                gamePanel.gameState = gamePanel.gameOptionState;
+                gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
         }
@@ -383,14 +383,14 @@ public class Maze extends Game {
             // Check if bot reaches exit
             if(botDX == exit[0] && botDY == exit[1]){
                 System.out.println("Bot D wins");
-                gamePanel.gameState = gamePanel.gameOptionState;
+                gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
 
             // Check if bot meets player
             if(botDX == playerX && botDY == playerY){
                 System.out.println("Bot D caught the player");
-                gamePanel.gameState = gamePanel.gameOptionState;
+                gamePanel.gameState = gamePanel.gameOverState;
                 return;
             }
         }

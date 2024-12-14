@@ -220,6 +220,7 @@ public class Tetris extends Game {
         if (lineCount > 0) {
             int singleLineScore = 10 * level;
             setScore(getScore() + singleLineScore * lineCount);
+            System.out.println(getScore());
         }
     }
 
