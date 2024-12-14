@@ -118,7 +118,7 @@ public class UI {
             }
             // Maze game play
             else if (gamePanel.playManager.getCurrentGame() instanceof Maze) {
-                drawMazeGame();
+                //drawMazeGame();
             }
         }
         // PAUSE STATE:

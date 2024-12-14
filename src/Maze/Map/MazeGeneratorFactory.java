@@ -4,8 +4,7 @@ import java.util.Random;
 public class MazeGeneratorFactory {
     public enum GeneratorType {
         PRIMS,
-        KRUSKALS,
-        GENETIC
+        KRUSKALS
     }
     public static MazeGenerator getMazeGenerator(GeneratorType type) {
         switch (type) {

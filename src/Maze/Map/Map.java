@@ -35,7 +35,6 @@ public class Map {
         // Use the MazeGeneratorFactory to obtain a MazeGenerator
         MazeGenerator selectedGenerator = MazeGeneratorFactory.getRandomMazeGenerator();
         this.maze = selectedGenerator.generateMaze(WIDTH, HEIGHT);
-        reduceWalls(10); 
     }
     public int[] findRandomPathPosition() {
         List<int[]> pathCells = new ArrayList<>();

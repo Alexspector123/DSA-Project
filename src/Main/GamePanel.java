@@ -126,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable{
         public void update() {
             
             if (gameState == playState) {
-                if(playManager.getCurrentGame() != null){
+                if(playManager.getCurrentGame() != null) {
                     playManager.getCurrentGame().update();
                 }
             }
