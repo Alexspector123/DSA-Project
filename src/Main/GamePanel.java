@@ -31,10 +31,7 @@ public class GamePanel extends JPanel implements Runnable{
         public boolean fullScreenOn = true;
    // INSTANTIATE OBJECTS: 
         public KeyHandler keyHandler = new KeyHandler(this); 
-        Thread gameThread; 
-    // Sound CLASS 
-        Sound music = new Sound(); 
-        Sound se = new Sound();
+        Thread gameThread;
     // UNIT INTERFACE 
         public UI ui = new UI(this);
     // Config
@@ -45,9 +42,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
-    public final int optionsState = 3;
+    public final int gameOptionState = 3;
     public final int gameOverState = 4;
-    public final int gameOptionState = 5;
     public GameManager playManager;
 
 
@@ -74,13 +70,15 @@ public class GamePanel extends JPanel implements Runnable{
 
 
         }
-        public void retry(){
+        public void reset(){
         //    player.restoreLife();
+            playManager.setUp(this);
         }
-        public void restart(){
-        //    player.setDefaultValues();
-            // aSetter.setInteractiveTile();            Wtf is this???
-        }
+        public void retry(){
+            //    player.restoreLife();
+                playManager.setUp(this);
+                playManager.loadGame(keyHandler.gameName);
+            }
         public void setFullScreen() {
 
             //GET LOCAL SCREEN DEVICE
@@ -159,6 +157,9 @@ public class GamePanel extends JPanel implements Runnable{
                         // UI
                         ui.draw(graphics2D);
                     }
+                    else{
+                        ui.draw(graphics2D);
+                    }
 
                 // Debug
                     if(keyHandler.showDebugText == true){
@@ -178,22 +179,4 @@ public class GamePanel extends JPanel implements Runnable{
                     graphics2D.dispose();
             }
 
-
-        // GAME THEME SONG:
-
-            public void playMusic(int i){
-            music.setFile(i);
-            music.play();
-            music.loop();
-        }
-
-        public void stopMusic(){
-
-            music.stop();
-        }
-    // SOUND EFFECTS:
-        public void playSE(int i){
-            se.setFile(i);
-            se.play();
-        }
 }

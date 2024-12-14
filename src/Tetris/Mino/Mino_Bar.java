@@ -2,6 +2,8 @@ package Mino;
 
 import java.awt.Color;
 
+import Mino.Mino;
+
 public class Mino_Bar extends Mino {
     
     public Mino_Bar(){
