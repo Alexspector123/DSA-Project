@@ -6,7 +6,9 @@ public abstract class Game {
     public void update(){};
     public void draw(Graphics2D graphics2D){};
     public void end(){};
-    public void setScore(int score){};
+    public void setScore(int score){
+        this.score = score;
+    };
     public int getScore(){
         return score;
     }

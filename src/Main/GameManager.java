@@ -44,15 +44,15 @@ public class GameManager extends Game{
         y += gamePanel.tileSize * 5;
         // TETRIS BUTTON:
         if (gamePanel.ui.commandNum == 0 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame2 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris2 , x , y , null );
         } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame1 , x , y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris1 , x , y , null );
         }
         // MAZE BUTTON:
         if (gamePanel.ui.commandNum == 1 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame2 , 2*x, y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze2 , 2*x, y , null );
         } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrame1 , 2*x, y , null );
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze1 , 2*x, y , null );
         }
         // RETURN BUTTON:
         if (gamePanel.ui.commandNum == 2 ) {
