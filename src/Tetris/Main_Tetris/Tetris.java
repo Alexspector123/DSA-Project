@@ -38,11 +38,11 @@ public class Tetris extends Game {
     final int HOLDMINO_X;
     final int HOLDMINO_Y;
 
-    public static ArrayList<Block> staticBlocks = new ArrayList<>();
-    public static Stack<Mino> HoldBlocks = new Stack();
+    public static ArrayList<Block> staticBlocks;
+    public static Stack<Mino> HoldBlocks;
 
     // Mino Bag
-    private ArrayList<Mino> minoBag = new ArrayList<>();
+    private ArrayList<Mino> minoBag;
     private Random random = new Random();
 
     // Drop attribute
@@ -77,6 +77,10 @@ public class Tetris extends Game {
 
         HOLDMINO_X = left_x - 205;
         HOLDMINO_Y = top_y + 100;
+
+        staticBlocks = new ArrayList<>();
+        HoldBlocks = new Stack();
+        minoBag = new ArrayList<>();
 
         // Initialize the bag with shuffled Minos
         refillAndShuffleBag();
@@ -318,6 +322,6 @@ public class Tetris extends Game {
     }
 
     public void end() {
-
+        
     }
 }

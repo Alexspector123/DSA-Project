@@ -31,10 +31,7 @@ public class GamePanel extends JPanel implements Runnable{
         public boolean fullScreenOn = true;
    // INSTANTIATE OBJECTS: 
         public KeyHandler keyHandler = new KeyHandler(this); 
-        Thread gameThread; 
-    // Sound CLASS 
-        Sound music = new Sound(); 
-        Sound se = new Sound();
+        Thread gameThread;
     // UNIT INTERFACE 
         public UI ui = new UI(this);
     // Config
@@ -75,10 +72,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
         public void retry(){
         //    player.restoreLife();
-        }
-        public void restart(){
-        //    player.setDefaultValues();
-            // aSetter.setInteractiveTile();            Wtf is this???
+            playManager.setUp(this);
         }
         public void setFullScreen() {
 
@@ -180,22 +174,4 @@ public class GamePanel extends JPanel implements Runnable{
                     graphics2D.dispose();
             }
 
-
-        // GAME THEME SONG:
-
-            public void playMusic(int i){
-            music.setFile(i);
-            music.play();
-            music.loop();
-        }
-
-        public void stopMusic(){
-
-            music.stop();
-        }
-    // SOUND EFFECTS:
-        public void playSE(int i){
-            se.setFile(i);
-            se.play();
-        }
 }
