@@ -11,6 +11,7 @@ public class GameFactory {
             case "Tetris":
                 return new Tetris(gamePanel);
             case "Maze":
+                System.out.println("NGANNNNNNNNNN");
                 return new Maze(gamePanel);
             default:
                 throw new IllegalArgumentException("System cannot load the game " + gameName);

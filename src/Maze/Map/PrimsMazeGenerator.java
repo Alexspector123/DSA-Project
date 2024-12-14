@@ -7,7 +7,6 @@ import java.util.Random;
 public class PrimsMazeGenerator implements MazeGenerator {
     private static final int WALL = 1;
     private static final int PATH = 0;
-
     @Override
     public int[][] generateMaze(int width, int height) {
         int[][] maze = new int[height][width];

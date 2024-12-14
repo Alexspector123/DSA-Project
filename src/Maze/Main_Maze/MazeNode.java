@@ -16,7 +16,6 @@ public class MazeNode {
         this.exit = exit;
         this.next = null;
     }
-
     public static void mappingNode(MazeNode n1, MazeNode n2) {
         n1.next = n2;
     }

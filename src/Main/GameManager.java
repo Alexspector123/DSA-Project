@@ -9,23 +9,19 @@ public class GameManager extends Game{
     private Game currentGame;
     GamePanel gamePanel;
     private GameManager() {}
-
     public static GameManager getInstance() {
         if(instance == null) {
             instance = new GameManager();
         }
         return instance;
     }
-
     public void setUp(GamePanel gamePanel) {
         currentGame = null;
         this.gamePanel = gamePanel;
     }
-
     public Game getCurrentGame() {
         return currentGame;
     }
-
     public void loadGame(String gameName) {
         if(currentGame != null) {
             currentGame.end();
@@ -37,7 +33,6 @@ public class GameManager extends Game{
             currentGame.end();
         }
     }
-
     public void draw() {
 
         int x = 0;
