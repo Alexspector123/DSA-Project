@@ -234,12 +234,12 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_ENTER){
                     // PRESS ENTER WITH PLAY BUTTON:
-                    if(gamePanel.ui.pauseCommandNum == 0){
+                    if(gamePanel.ui.commandNum == 0){
                         gamePanel.gameState = gamePanel.playState;
                         gamePanel.retry();
                     }
                     // PRESS ENTER WITH EXIT BUTTON:
-                    if(gamePanel.ui.pauseCommandNum == 1){
+                    if(gamePanel.ui.commandNum == 1){
                         gamePanel.gameState = gamePanel.gameOptionState;
                         gamePanel.reset();
                     }
