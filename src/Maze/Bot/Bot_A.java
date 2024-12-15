@@ -15,7 +15,7 @@ public class Bot_A {
         int r = maze.length;
         int c = maze[0].length;
         int[][] gScore = new int[r][c];
-        for(int[] row : gScore){
+        for(int[] row : gScore) {
             Arrays.fill(row, Integer.MAX_VALUE);
         }
         gScore[startX][startY] = 0;
@@ -38,7 +38,7 @@ public class Bot_A {
             }
             for(int[] dir : directions){
                 int newX = x + dir[0], newY = y + dir[1];
-                if(isValidMove(newX, newY, maze) && !visited[newX][newY]){
+                if(isValidMove(newX, newY, maze) && !visited[newX][newY]) {
                     int tentativeGScore = gScore[x][y] + 1;
                     if(tentativeGScore < gScore[newX][newY]){
                         gScore[newX][newY] = tentativeGScore;
@@ -51,14 +51,15 @@ public class Bot_A {
         }
         return new ArrayList<>();
     }
-    private int heuristic(int x1, int y1, int x2, int y2){
+    private int heuristic(int x1, int y1, int x2, int y2) {
         // Manhattan distance
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
-    private boolean isValidMove(int x, int y, int[][] maze){
+    private boolean isValidMove(int x, int y, int[][] maze) {
         return x >= 0 && x < maze.length && y >= 0 && y < maze[0].length && maze[x][y] != 1;
     }
-    private List<int[]> reconstructPath(int[][][] parent, int startX, int startY, int targetX, int targetY){
+
+    private List<int[]> reconstructPath(int[][][] parent, int startX, int startY, int targetX, int targetY) {
         List<int[]> path = new ArrayList<>();
         int x = targetX, y = targetY;
         while(!(x == startX && y == startY)){

@@ -62,7 +62,7 @@ public class Maze extends Game {
     private BufferedImage left1_D, left2_D, left3_D;
     private BufferedImage right1_D, right2_D, right3_D;
 
-    private BufferedImage t1, t2;
+    private BufferedImage t1, t2, t3;
     private BufferedImage holeImage;
 
     // Animation variables
@@ -73,7 +73,7 @@ public class Maze extends Game {
     private int botDMoveCounter = 0;
     private int botAMoveCounter = 0;
     private int botMoveDelayD = 60;
-    private int botMoveDelayA = 60; 
+    private int botMoveDelayA = 50; 
 
     private List<int[]> holePositions = new ArrayList<>();
     private int holeGenerationCounter = 0;
@@ -133,7 +133,7 @@ public class Maze extends Game {
         }
     
         this.botDPath = botD.calculateShortestPath(botDX, botDY, maze, exit);
-        this.botAPath = botA.calculateShortestPath(botAX, botAY, maze, exit);
+        this.botAPath = botA.calculateShortestPath(playerX, botAY, maze, new int[]{playerX, playerY});
         holePositions.clear();
     }
 
@@ -404,18 +404,18 @@ public class Maze extends Game {
                 int x = j * tileSize;
                 int y = i * tileSize;
                 if (maze[i][j] == 1) {
-                    //graphics2D.setColor(Color.BLACK);
-                    //graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
                     graphics2D.drawImage(t2, x, y, tileSize, tileSize, null);
+
                 } 
                 else if (i == currentMaze.exit[0] && j == currentMaze.exit[1]) {
                     graphics2D.setColor(Color.WHITE);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
+                    //graphics2D.drawImage(t3, x, y, tileSize, tileSize, null);
                 } 
                 else {
                     graphics2D.setColor(Color.BLACK);
                     graphics2D.fillRect(j * tileSize, i * tileSize, tileSize, tileSize);
-                    //graphics2D.drawImage(t1, x, y, tileSize, tileSize, null);
+                    //graphics2D.drawImage(t3, x, y, tileSize, tileSize, null);
                 }
             }
         }
@@ -589,6 +589,7 @@ public class Maze extends Game {
     public void getBaseTileImage() {
         t1 = setupTile("ground");
         t2 = setupTile("stone_1_1");
+        t3 = setupTile("stone_ 1_2");
     }
 
     public void getBaseBotAImage() {

@@ -53,7 +53,7 @@ public class UI {
             bar2_1, bar2_2, bar2_3, bar2_4, bar2_5, bar2_6, bar2_7, bar2_8, bar2_9, bar2_10, bar2_11, bar2_12;
 
     // GAME OVER SCREEN
-    BufferedImage gameOverScreen, retryButton1, retryButton2, quitButton1, quitButton2;
+    BufferedImage gameOverScreen, retryButton1, retryButton2, quitButton1, quitButton2, equippedCursor;
     // CHOOSING GAME SCREEN
     BufferedImage gameFrameTetris1, gameFrameTetris2, gameFrameMaze1, gameFrameMaze2;
     // ANIMATION FOR BUTTON:
@@ -106,7 +106,8 @@ public class UI {
         // TITLE SCREEN STATE:
         if (gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
-        } else if (gamePanel.gameState == gamePanel.gameOptionState) {
+        } 
+        else if (gamePanel.gameState == gamePanel.gameOptionState) {
             gamePanel.playManager.draw();
         }
         // PLAY STATE:
@@ -149,17 +150,17 @@ public class UI {
         y += gamePanel.tileSize * 5;
         // PLAY BUTTON:
         if (commandNum == 0) {
-            g2.drawImage(playButton1, x, y, null);
+            g2.drawImage(playButton1, x, y + 15, null);
         } else {
-            g2.drawImage(playButton2, x, y, null);
+            g2.drawImage(playButton2, x, y + 15, null);
         }
 
         // EXIT BUTTON:
         y += 82;
         if (commandNum == 1) {
-            g2.drawImage(exitButton1, x, y, null);
+            g2.drawImage(exitButton1, x, y + 15, null);
         } else {
-            g2.drawImage(exitButton2, x, y, null);
+            g2.drawImage(exitButton2, x, y + 15, null);
         }
     }
 
@@ -185,6 +186,7 @@ public class UI {
         retryButton2 = setup("RetryButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         quitButton1 = setup("QuitButton_1", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
         quitButton2 = setup("QuitButton_2", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 10);
+        equippedCursor = setup("EquippedCursor", (gamePanel.tileSize * 3) + 7, gamePanel.tileSize + 20);
         // CHOOSING SCREEN
         gameFrameTetris1 = setup("Frame_11", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
         gameFrameTetris2 = setup("Frame_21", gamePanel.tileSize * 6, gamePanel.tileSize * 6);
@@ -250,13 +252,15 @@ public class UI {
         int y = 0;
         // DRAW MENU TITLE SCREEN:
         g2.drawImage(gameOverScreen, x, y, null);
-        x = gamePanel.tileSize * 10;
-        y = gamePanel.tileSize * 4;
-
-        g2.setFont(maruMonica);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40F));
-
-        g2.drawString("Score: " + gamePanel.playManager.getCurrentGame().getScore(), x, y);
+        x = gamePanel.tileSize * 16;
+        y = gamePanel.tileSize * 5;
+        g2.drawImage(equippedCursor, x - 15, y - 40, null);
+        g2.setFont(alagard);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 38F));
+        g2.drawString("SCORE", x - 15, y - 50);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30F));
+        g2.drawString("" + gamePanel.playManager.getCurrentGame().getScore(), x + 40, y + 5);
         // DRAW BUTTON:
         y += 100;
         // RETRY BUTTON:

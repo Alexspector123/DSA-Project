@@ -43,22 +43,25 @@ public class GameManager extends Game{
         x += gamePanel.tileSize * 7;
         y += gamePanel.tileSize * 5;
         // TETRIS BUTTON:
-        if (gamePanel.ui.commandNum == 0 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris2 , x , y , null );
-        } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris1 , x , y , null );
+        if (gamePanel.ui.commandNum == 0) {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris2 , x , y - 65, null );
+        } 
+        else {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameTetris1 , x , y - 65, null );
         }
         // MAZE BUTTON:
-        if (gamePanel.ui.commandNum == 1 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze2 , 2*x, y , null );
-        } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze1 , 2*x, y , null );
+        if (gamePanel.ui.commandNum == 1) {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze2 , 2*x, y - 65, null );
+        } 
+        else {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.gameFrameMaze1 , 2*x, y - 65, null );
         }
         // RETURN BUTTON:
-        if (gamePanel.ui.commandNum == 2 ) {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton1 , x , (int)(gamePanel.tileSize * 3.5) , null );
-        } else {
-            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton2 , x , (int)(gamePanel.tileSize * 3.5) , null );
+        if (gamePanel.ui.commandNum == 2) {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton1 , (int) 2.5 * x , y * 2, null );
+        } 
+        else {
+            gamePanel.ui.g2.drawImage(gamePanel.ui.exitButton2 , (int) 2.5 * x , y * 2, null );
         }
     }
 }
