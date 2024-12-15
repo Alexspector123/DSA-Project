@@ -1,4 +1,4 @@
-# 🏰 Finantasy 🏹
+# 🏰 Finantasy Minigame🏹
 🎮 The realm of Data Structures and Algorithms (DSA) plays a pivotal role in the development of efficient software systems. For our four-credit "Data Structures and Algorithms" course, which contributes to our degree, we have chosen to design and implement a problem-solving application that focuses on optimizing algorithmic performance using various data structures. This project allows us to deepen our understanding of essential concepts such as trees, graphs, dynamic programming, and sorting algorithms.
 Our goal is to build a system that not only performs efficiently but also adapts to varying complexities in input size and problem constraints. Through this project, we aim to improve our problem-solving and coding skills while also applying theoretical knowledge to practical scenarios. The project will challenge us to optimize solutions, analyze time and space complexity, and ultimately refine our understanding of algorithmic design. It also provides an opportunity to collaborate with peers to tackle real-world computational challenges and test our skills in a comprehensive, hands-on way.
 ## 🗡️ General
