@@ -12,7 +12,6 @@ import Main.GamePanel;
 import Mino.*;
 
 public class Tetris extends Game {
-
     // Main Play Area
     private final int WIDTH = 360;
     private final int HEIGHT = 600;
@@ -20,7 +19,6 @@ public class Tetris extends Game {
     public static int right_x;
     public static int top_y;
     public static int bottom_y;
-
     // Mino
     private Mino currentMino;
     private final int MINO_START_X;
@@ -29,36 +27,27 @@ public class Tetris extends Game {
     private Mino nextMino;
     private final int NEXTMINO_X;
     private final int NEXTMINO_Y;
-
     // The Ghost Mino
     private Mino ghostMino;
-
     // The Hold Mino
     private Mino holdMino;
     private final int HOLDMINO_X;
     private final int HOLDMINO_Y;
-
     public static ArrayList<Block> staticBlocks;
     private static Stack<Mino> HoldBlocks;
-
     // Mino Bag
     private ArrayList<Mino> minoBag;
     private Random random = new Random();
-
     // Drop attribute
     public static int dropInterval = 60; // Minos drop every 60 frames
-
     // Effect
     private boolean effectCounterOn;
     private int effectCounter;
     private ArrayList<Integer> effectY = new ArrayList<>();
-
     // Score
     private int level = 1;
     private int lines;
-
     GamePanel gamePanel;
-
     public Tetris(GamePanel gamePanel) {
 
         this.gamePanel = gamePanel;
